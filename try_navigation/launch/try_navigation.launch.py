@@ -25,7 +25,7 @@ def generate_launch_description():
     odom = LaunchConfiguration('odom')
     declare_odom_arg = DeclareLaunchArgument(
         'odom',
-        default_value='/fusion/odom',
+        default_value='/odom',
         description='Odometry topic name'
     )
     
@@ -137,13 +137,13 @@ def generate_launch_description():
             arguments=[],
         ),
         #robot ctrl
-        #Node(package='try_navigation',
-        #    executable='path_follower',
-        #    name='path_follower_node',
-        #    output='screen',
-        #    parameters=[{'odom': odom}],
-        #    arguments=[],
-        #),
+        Node(package='try_navigation',
+            executable='path_follower',
+            name='path_follower_node',
+            output='screen',
+            parameters=[{'odom': odom}],
+            arguments=[],
+        ),
         
         #navigation start
         Node(package='navigation_control',

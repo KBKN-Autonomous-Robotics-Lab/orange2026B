@@ -273,7 +273,7 @@ class PathFollower(Node):
         
         #set speed
         
-        speed_set = 1.1#55 AutoNav 1.10
+        speed_set = 0.5#55 AutoNav 1.10
         speed = speed_set
 
         
