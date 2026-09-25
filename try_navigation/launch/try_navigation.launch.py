@@ -25,14 +25,14 @@ def generate_launch_description():
     odom = LaunchConfiguration('odom')
     declare_odom_arg = DeclareLaunchArgument(
         'odom',
-        default_value='/fusion/odom',
+        default_value='/fusion/odom',#/odom/wheel_spimu /fusion/odom
         description='Odometry topic name'
     )
     
     waypoint_path = LaunchConfiguration('waypoint_path')
     declare_waypoint_arg = DeclareLaunchArgument(
         'waypoint_path',
-        default_value='kbkn_maps/waypoints/tsukuba/2025/papa/tsukuba_waypoint.yaml',
+        default_value='kbkn_maps/waypoints/hosei/2025/nakaniwa.yaml',
         description='waypoint name'
     )
     #kbkn_maps/waypoints/tsukuba/2025/papa/tsukuba_waypoint.yaml
@@ -137,13 +137,13 @@ def generate_launch_description():
             arguments=[],
         ),
         #robot ctrl
-        #Node(package='try_navigation',
-        #    executable='path_follower',
-        #    name='path_follower_node',
-        #    output='screen',
-        #    parameters=[{'odom': odom}],
-        #    arguments=[],
-        #),
+        Node(package='try_navigation',
+            executable='path_follower',
+            name='path_follower_node',
+            output='screen',
+            parameters=[{'odom': odom}],
+            arguments=[],
+        ),
         
         #navigation start
         Node(package='navigation_control',
