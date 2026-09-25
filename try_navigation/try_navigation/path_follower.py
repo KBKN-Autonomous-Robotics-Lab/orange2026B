@@ -164,24 +164,27 @@ class PathFollower(Node):
             #[ 10.0,  11.5, -19.0,  39.0, 1.0], #nakaniwa_test
             #[ 30.0,  31.5, -19.0,  39.0, 1.0], #nakaniwa_test
             #[ 0.0,  1.5,  30.0,  65.0, 1.0], #nakaniwa_test
-            [ 64.2,  65.2,  19.0,  39.0, 1.0], #shiyakusyo
-            [100.0, 101.0,  25.0,  45.0, 1.0], #dourotan1
-            [177.7, 178.7,  25.0,  45.0, 1.0], #dourotan2
-            [257.5, 277.5, -60.0, -59.0, 1.0], #singoumaeteisisen1
-            [257.5, 277.5, -66.5, -65.5, 1.0], #singoumae1
-            [256.5, 276.5, -86.2, -85.2, 1.0], #singoumaeteisisen2
-            [270.3, 271.3, -99.0, -79.5, 1.0], #singoumae2
-            [405.0, 425.0, -80.2, -79.2, 1.0], #ekimae oudanhodou1 y-1
-            [545.0, 568.0, -85.0, -60.0, 0.0], #ekimae not stop
-            [410.0, 417.0, -71.5, -70.5, 1.0], #ekimae oudanhodou2 y-2
-            [290.6, 291.6, -98.0, -78.0, 1.0], #singoumaeteisisen3
-            [284.3, 285.3, -98.0, -78.0, 1.0], #singoumae3
-            [259.5, 279.5, -83.7, -82.7, 1.0], #singoumaeteisisen4 12
-            [259.5, 279.5, -80.3, -79.3, 1.0], #singoumae4 13
-            [185.0, 186.0,  25.0,  45.0, 1.0], #dourotan3
-            [107.5, 108.5,  25.0,  45.0, 1.0], #dourotan4
-            [ 64.0, 104.0, -30.0, -25.0, 1.0], #GOAL!!!!
-            [  999,   999,   999,   999, 0.0] ]) #
+            # xmin, xmax, ymin, ymax, flag
+            # つくばチャレンジ2026 仮設定
+            [ 17.00,  17.40,  66.20,  70.20, 1.0], # 0  道路端1
+            [ 46.20,  46.60,  67.90,  71.90, 1.0], # 1  道路端2
+            [134.60, 135.00,  50.70,  54.70, 1.0], # 2  道路端3
+            [158.00, 158.40,  48.90,  52.90, 1.0], # 3  道路端4
+            [252.90, 256.90, 109.60, 110.00, 1.0], # 4  道路端5
+            [259.90, 263.90, 186.40, 186.80, 1.0], # 5  信号前停止線1
+            [261.40, 261.80, 190.10, 194.10, 1.0], # 6  信号前1
+            [462.00, 466.00, 131.70, 132.10, 1.0], # 7  道路端6
+            [461.70, 465.70, 120.00, 120.40, 1.0], # 8  道路端7
+            [293.76, 294.16, 197.49, 201.49, 1.0], # 9  信号前停止線2
+            [279.90, 280.30, 190.30, 194.30, 1.0], # 10 信号前2
+            [254.20, 258.20, 119.10, 119.50, 1.0], # 11 道路端8
+            [165.80, 166.20,  46.90,  50.90, 1.0], # 12 道路端9
+            [142.20, 142.60,  49.20,  53.20, 1.0], # 13 道路端10
+            [ 59.00,  59.40,  60.90,  64.90, 1.0], # 14 道路端11
+            [ 26.10,  26.50,  67.70,  71.70, 1.0], # 15 道路端12 
+            [ 32.90,  33.30,  -0.20,   3.80, 1.0], # 16 GOAL
+            [999, 999, 999, 999, 0.0] # 終端
+        ])
         self.stop_num = 0;
         
         #obs
@@ -763,24 +766,27 @@ class PathFollower(Node):
         self.ref_theta_y = 0 #pitch /math.pi*180
         self.ref_theta_z = yaw /math.pi*180
         
-        if self.waypoint_number >= 225: # after dourotan4
-            if self.stop_num <= 15:
-                self.stop_num = 16
-        elif self.waypoint_number >= 198: # after singou
-            if self.stop_num <= 13:
-                self.stop_num = 14
-        elif self.waypoint_number >= 178: # after ekimae oudanhodou2
-            if self.stop_num <= 9:
-                self.stop_num = 10
-        elif self.waypoint_number >= 138: # after ekimae oudanhodou1
-            if self.stop_num <= 7:
-                self.stop_num = 8
-        elif self.waypoint_number >= 81: # after singou
-            if self.stop_num <= 6:
-                self.stop_num = 7
-        elif self.waypoint_number >= 57: # after dourotan2
-            if self.stop_num <= 2:
-                self.stop_num = 3
+        # 2025年版のwaypoint_numberによるスキップ処理
+        # 2026年のウェイポイント番号が確定するまで無効化
+
+        # if self.waypoint_number >= 225: # after dourotan4
+        #     if self.stop_num <= 15:
+        #         self.stop_num = 16
+        # elif self.waypoint_number >= 198: # after singou
+        #     if self.stop_num <= 13:
+        #         self.stop_num = 14
+        # elif self.waypoint_number >= 178: # after ekimae oudanhodou2
+        #     if self.stop_num <= 9:
+        #         self.stop_num = 10
+        # elif self.waypoint_number >= 138: # after ekimae oudanhodou1
+        #     if self.stop_num <= 7:
+        #         self.stop_num = 8
+        # elif self.waypoint_number >= 81: # after singou
+        #     if self.stop_num <= 6:
+        #         self.stop_num = 7
+        # elif self.waypoint_number >= 57: # after dourotan2
+        #     if self.stop_num <= 2:
+        #         self.stop_num = 3
         
         if ((self.stop_xy[self.stop_num,0] < self.ref_position_x) and (self.ref_position_x < self.stop_xy[self.stop_num,1]) and (self.stop_xy[self.stop_num,2] < self.ref_position_y) and (self.ref_position_y < self.stop_xy[self.stop_num,3]) ) or ((self.stop_xy[self.stop_num,0] < self.position_x) and (self.position_x < self.stop_xy[self.stop_num,1]) and (self.stop_xy[self.stop_num,2] < self.position_y) and (self.position_y < self.stop_xy[self.stop_num,3]) ):
             if self.stop_xy[self.stop_num,4] > 0:
