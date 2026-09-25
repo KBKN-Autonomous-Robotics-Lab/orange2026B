@@ -25,7 +25,7 @@ def generate_launch_description():
     odom = LaunchConfiguration('odom')
     declare_odom_arg = DeclareLaunchArgument(
         'odom',
-        default_value='/odom',
+        default_value='/fusion/odom',#/odom/wheel_spimu /fusion/odom
         description='Odometry topic name'
     )
     
