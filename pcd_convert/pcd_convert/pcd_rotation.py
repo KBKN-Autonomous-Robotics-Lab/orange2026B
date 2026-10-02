@@ -40,11 +40,11 @@ class PcdRotation(Node):
         
         #パラメータ
         #set LiDAR position
-        self.MID360_HIGHT = 950.8/1000; #hight position[m] 0.9508604675798957
+        self.MID360_HIGHT = 790/1000; #hight position[m] 0.9508604675798957
             
         #上下反転  LiDAR init
-        self.THETA_INIT_X = 180.5 #[deg]
-        self.THETA_INIT_Y = 2.663 #[deg] 2.663001576990896
+        self.THETA_INIT_X = 180.0 #[deg]
+        self.THETA_INIT_Y = 0 #[deg] 2.663001576990896
         self.THETA_INIT_Z = 0 #[deg]
         
         #initialize calibration

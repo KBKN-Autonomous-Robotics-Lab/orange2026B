@@ -17,6 +17,7 @@ from std_msgs.msg import Int32
 from std_msgs.msg import String
 import tkinter as tk
 from threading import Thread
+from visualization_msgs.msg import Marker
 
 navigation_status = "Initializing..."
 
@@ -82,6 +83,7 @@ class PathFollower(Node):
         self.cmd_vel_publisher = self.create_publisher(geometry_msgs.Twist, 'cmd_vel', qos_profile) #set publish pcd topic name
         self.pcd_test_publisher = self.create_publisher(sensor_msgs.PointCloud2, 'pcd_test_global', qos_profile) 
         self.pcd_jam_publisher = self.create_publisher(sensor_msgs.PointCloud2, 'pcd_jam', qos_profile) 
+        self.marker_pub = self.create_publisher(Marker, 'lidar_detection_area', 10)
         #self.marker_pub = self.create_publisher(MarkerArray, 'wall_follow_markers', 10)
 
         #パラメータ init
@@ -201,9 +203,7 @@ class PathFollower(Node):
         self.jam_active = False
         self.jam_last_print = -1
         self.c_jam_obs = 0
-        
-        
-        
+
         ################# IGVC SelfDrive Quolification line stop test #20250530# #################
         self.sd_quolification_line_stop = 0 #root flag
         #self.sd_c_obs_stop_dist = 0.305*3 + 0.0254*2 + 0.4 + 0.37# 3feat + 2inch +top +delay
@@ -244,6 +244,243 @@ class PathFollower(Node):
         self.previous_status = None    
         self.human_status = None    
         ##################################################################
+        # robot size
+        self.robot_x_mae = 0.17
+        self.robot_x_ushiro = 0.60
+        self.robot_y = 0.30
+        # ロボット前方の危険ゾーン
+        self.forward_x_min = 0.17
+        self.forward_x_max = 0.63 + 0.0
+        self.forward_y_min = -0.33
+        self.forward_y_max = 0.33
+
+        # robot footprint(lidar tyushin)
+        self.footprint_x_max = 0.45  # robot size=0.17m
+        self.footprint_x_min = -0.70 # robot size=-0.60m
+        self.right_footprint_y = 0.40 # robot size=0.36m
+        self.left_footprint_y = -0.40 # robot size=-0.36m
+        self.center_footprint_y = 0.0
+        self.back_footprint_x_max = 0.10
+        self.back_footprint_x_min = -0.10
+        self.back_footprint_y_max = 0.10
+        self.back_footprint_y_min = -0.10
+        self.swept_radius = 0.80
+        self.robot_footprint_obs = 0
+        self.right_footprint_obs = 0
+        self.left_footprint_obs = 0
+        self.right_back_obs = 0
+        self.left_back_obs = 0
+        self.forward_obs = 0
+
+        # 緊急回避footprint
+        # 1番外側
+        self.rf_out_x_min = -0.20
+        #self.rf_out_x_min = -(self.robot_x_ushiro + 0.80)
+        self.rf_out_x_max = self.robot_x_mae + 0.80
+        self.rf_out_y_min = -(self.robot_y + 0.60)
+        self.rf_out_y_max = self.robot_y + 0.60
+
+        self.rf_second_out_x_min = -0.20
+        #self.rf_second_out_x_min = -(self.robot_x_ushiro + 0.70)
+        self.rf_second_out_x_max = self.robot_x_mae + 0.70
+        self.rf_second_out_y_min = -(self.robot_y + 0.45)
+        self.rf_second_out_y_max = self.robot_y + 0.45
+
+        self.rf_center_x_min = -0.20
+        #self.rf_center_x_min = -(self.robot_x_ushiro + 0.60)
+        self.rf_center_x_max = self.robot_x_mae + 0.60
+        self.rf_center_y_min = -(self.robot_y + 0.30)
+        self.rf_center_y_max = self.robot_y + 0.30
+
+        self.rf_second_in_x_min = -0.20
+        #self.rf_second_in_x_min = -(self.robot_x_ushiro + 0.40)
+        self.rf_second_in_x_max = self.robot_x_mae + 0.40
+        self.rf_second_in_y_min = -(self.robot_y + 0.20)
+        self.rf_second_in_y_max = self.robot_y + 0.20
+
+        self.rf_in_x_min = -0.20
+        #self.rf_in_x_min = -(self.robot_x_ushiro + 0.20)
+        self.rf_in_x_max = self.robot_x_mae + 0.20
+        self.rf_in_y_min = -(self.robot_y + 0.10)
+        self.rf_in_y_max = self.robot_y + 0.10
+        
+        # flag
+        self.out_obs = 0
+        self.second_out_obs = 0
+        self.center_obs = 0
+        self.second_in_obs = 0
+        self.in_obs = 0
+
+    def publish_forward_obs_area(self):
+        marker = Marker()
+
+        marker.header.frame_id = "odom"  # ←人検知と揃える
+        marker.header.stamp = self.get_clock().now().to_msg()
+
+        marker.ns = "robot_footprint"
+        marker.id = 2   # ← human=0, stop_line=1 にする
+
+        marker.type = Marker.CUBE
+        marker.action = Marker.ADD
+
+        # 中心
+        marker.pose.position.x = (self.forward_x_min + self.forward_x_max) / 2
+        marker.pose.position.y = (self.forward_y_min + self.forward_y_max) / 2
+        marker.pose.position.z = 0.01
+
+        # サイズ
+        marker.scale.x = (self.forward_x_max - self.forward_x_min)
+        marker.scale.y = (self.forward_y_max - self.forward_y_min)
+        marker.scale.z = 0.02
+
+        # 色（青にすると区別しやすい）
+        marker.color.r = 0.0
+        marker.color.g = 1.0
+        marker.color.b = 0.0
+        marker.color.a = 0.5
+
+        self.marker_pub.publish(marker)
+    
+    def publish_right_back_footprint(self):
+        marker = Marker()
+
+        marker.header.frame_id = "odom"  # ←人検知と揃える
+        marker.header.stamp = self.get_clock().now().to_msg()
+
+        marker.ns = "back_footprint_right"
+        marker.id = 3   # ← human=0, stop_line=1 にする
+
+        marker.type = Marker.CUBE
+        marker.action = Marker.ADD
+
+        # 中心
+        marker.pose.position.x = -0.50
+        marker.pose.position.y = 0.325
+        marker.pose.position.z = 0.01
+
+        # サイズ
+        marker.scale.x = (self.back_footprint_x_max - self.back_footprint_x_min)
+        marker.scale.y = (self.back_footprint_y_max - self.back_footprint_y_min)
+        marker.scale.z = 0.02
+
+        # 色（青にすると区別しやすい）
+        marker.color.r = 0.0
+        marker.color.g = 0.0
+        marker.color.b = 1.0
+        marker.color.a = 0.4
+
+        self.marker_pub.publish(marker)
+    def publish_left_back_footprint(self):
+        marker = Marker()
+
+        marker.header.frame_id = "odom"  # ←人検知と揃える
+        marker.header.stamp = self.get_clock().now().to_msg()
+
+        marker.ns = "back_footprint_right"
+        marker.id = 4   # ← human=0, stop_line=1 にする
+
+        marker.type = Marker.CUBE
+        marker.action = Marker.ADD
+
+        # 中心
+        marker.pose.position.x = -0.50
+        marker.pose.position.y = -0.325
+        marker.pose.position.z = 0.01
+
+        # サイズ
+        marker.scale.x = (self.back_footprint_x_max - self.back_footprint_x_min)
+        marker.scale.y = (self.back_footprint_y_max - self.back_footprint_y_min)
+        marker.scale.z = 0.02
+
+        # 色（青にすると区別しやすい）
+        marker.color.r = 0.0
+        marker.color.g = 1.0
+        marker.color.b = 1.0
+        marker.color.a = 0.4
+
+        self.marker_pub.publish(marker)
+
+
+    
+    def publish_stop_line_points(self, points, header):
+
+        if points.shape[1] == 0:
+            return  # 点がないときは出さない
+
+        msg = PointCloud2()
+        msg.header = header
+
+        msg.height = 1
+        msg.width = points.shape[1]
+
+        msg.fields = [
+            PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+            PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+            PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+        ]
+
+        msg.is_bigendian = False
+        msg.point_step = 12
+        msg.row_step = msg.point_step * points.shape[1]
+        msg.is_dense = True
+
+        buffer = []
+        for i in range(points.shape[1]):
+            buffer.append(struct.pack('fff',
+                float(points[0, i]),
+                float(points[1, i]),
+                float(points[2, i])
+            ))
+
+        msg.data = b''.join(buffer)
+
+        self.stop_line_pcd_pub.publish(msg)
+
+        
+    def publish_rf_area(self):
+        areas = [
+            (self.rf_out_x_min, self.rf_out_x_max,
+            self.rf_out_y_min, self.rf_out_y_max, 3, 0.10),
+
+            (self.rf_second_out_x_min, self.rf_second_out_x_max,
+            self.rf_second_out_y_min, self.rf_second_out_y_max, 4, 0.15),
+
+            (self.rf_center_x_min, self.rf_center_x_max,
+            self.rf_center_y_min, self.rf_center_y_max, 5, 0.20),
+
+            (self.rf_second_in_x_min, self.rf_second_in_x_max,
+            self.rf_second_in_y_min, self.rf_second_in_y_max, 6, 0.25),
+
+            (self.rf_in_x_min, self.rf_in_x_max,
+            self.rf_in_y_min, self.rf_in_y_max, 7, 0.30),
+        ]
+
+        for x_min, x_max, y_min, y_max, marker_id, alpha in areas:
+            marker = Marker()
+
+            marker.header.frame_id = "odom"
+            marker.header.stamp = self.get_clock().now().to_msg()
+
+            marker.ns = "robot_footprint"
+            marker.id = marker_id
+
+            marker.type = Marker.CUBE
+            marker.action = Marker.ADD
+
+            marker.pose.position.x = (x_min + x_max) / 2.0
+            marker.pose.position.y = (y_min + y_max) / 2.0
+            marker.pose.position.z = 0.01
+
+            marker.scale.x = x_max - x_min
+            marker.scale.y = y_max - y_min
+            marker.scale.z = 0.02
+
+            marker.color.r = 0.0
+            marker.color.g = 1.0
+            marker.color.b = 0.0
+            marker.color.a = alpha
+
+            self.marker_pub.publish(marker)
 
     # actionリクエストの受信時に呼ばれる(tuika)
     def listener_callback(self, goal_handle):
@@ -366,11 +603,7 @@ class PathFollower(Node):
         speed_set = 0.75#55 AutoNav 1.10
         speed = speed_set
         
-        ################# IGVC SelfDrive Full #20250601# #################
-        if self.sd_full_flag == 1 :
-            if self.waypoint_number == 18:
-                speed = speed_set#0.35
-        ##################################################################
+
         
         #points = self.obs_points
         points = np.concatenate([self.obs_points, self.low_step_obs_points], axis=1)
@@ -382,8 +615,32 @@ class PathFollower(Node):
         c_obs = ( -60<obs_theta) * (obs_theta<  60) * (obs_dist<1.2) #1.2
         c_obs_near = ( -50<obs_theta) * (obs_theta<  50) * (obs_dist<0.5)
         c_obs_back = ( -50<obs_theta) * (obs_theta<  50) * (obs_dist<0.4)
-
+        # 緊急回避追加
+        left_mask = ((obs_theta > 20) & (obs_theta < 100) & (obs_dist < 1.5))
+        right_mask = ((obs_theta > -100) & (obs_theta < -20) & (obs_dist < 1.5))
         
+        """
+        if (self.out_obs == 1 and self.second_out_obs == 1 and self.center_obs == 1 and self.second_in_obs == 1 and self.in_obs == 1):
+            speed = 0.05
+            
+        elif (self.out_obs == 1 and self.second_out_obs == 1 and self.center_obs == 1 and self.second_in_obs == 1 ):
+            speed = 0.10
+            
+        elif (self.out_obs == 1 and self.second_out_obs == 1 and self.center_obs == 1):
+            speed = 0.15
+            
+        elif (self.out_obs == 1 and self.second_out_obs == 1):
+            speed = 0.20
+            
+        elif (self.out_obs == 1):
+            speed = 0.25
+
+        elif np.any(c_obs_near) :
+            speed = -0.10
+        
+        #self.get_logger().info(f"speed={speed}")
+        """
+
         if np.any(r_obs) and np.any(l_obs) and ~np.any(c_obs) :
             speed = 0.25
             #target_theta = 0
@@ -393,17 +650,6 @@ class PathFollower(Node):
         elif np.any(r_obs) and ~np.any(c_obs) :
             speed = 0.10 # autonav
             target_rad, target_theta = self.set_target_rad(path, position_x, position_y, self.target_dist_near, theta_x, theta_y, theta_z)
-            #if target_theta < 0:
-            #    target_theta = 0.0#lim_steer
-            #    target_rad = target_theta/180*math.pi
-            #self.get_logger().info('lllllllllll go left lllllllllllllllll')
-        elif np.any(l_obs) and ~np.any(c_obs) :
-            speed = 0.10 # autonav
-            target_rad, target_theta = self.set_target_rad(path, position_x, position_y, self.target_dist_near, theta_x, theta_y, theta_z)
-            #if 0 < target_theta:
-            #    target_theta = 0.0#-lim_steer
-            #    target_rad = target_theta/180*math.pi
-            #self.get_logger().info('rrrrrrrrrr go right rrrrrrrrrrrrrrrrr')
         elif np.any(r_obs) and ~np.any(l_obs) and np.any(c_obs_near) :
             speed = 0.0
             target_rad, target_theta = self.set_target_rad(path, position_x, position_y, self.target_dist_near, theta_x, theta_y, theta_z)
@@ -417,8 +663,8 @@ class PathFollower(Node):
             target_rad, target_theta = self.set_target_rad(path, position_x, position_y, self.target_dist_near, theta_x, theta_y, theta_z)
             #if abs(target_theta) < 3: #250530 off
             #    speed = -0.10          #250530 off
-                #target_theta = -lim_steer
-                #target_rad = -lim_steer/180*math.pi
+            #target_theta = -lim_steer
+            #target_rad = -lim_steer/180*math.pi
             #self.get_logger().info('ccccccccccccccccc c_obs_near rrrrrrrrrrrrrrr')
         elif np.any(c_obs_near) :
             speed = -0.10
@@ -428,7 +674,9 @@ class PathFollower(Node):
             speed = 0.20 # autonav 0.30
             target_rad, target_theta = self.set_target_rad(path, position_x, position_y, self.target_dist_near, theta_x, theta_y, theta_z)
             #self.get_logger().info('dddddddddd speed down ddddddddddd')
+
         
+
         '''
         if self.rh_obs and ~self.lh_obs:
             speed = 0.15
@@ -437,6 +685,7 @@ class PathFollower(Node):
             speed = 0.15
             target_rad = -lim_steer/180*math.pi
         '''
+
         
         rh_obs = self.rh_obs
         lh_obs = self.lh_obs
@@ -491,7 +740,7 @@ class PathFollower(Node):
             self.jam_active = False
 
         #---------------------------        
-        
+        self.get_logger().info(f"theta_z:{theta_z}")
         if ~np.any(ch_obs) :
             if np.any(lh_obs) and np.any(rh_obs) :  #真ん中　
                 target_theta = (target_rad) * (180 / math.pi)
@@ -506,18 +755,18 @@ class PathFollower(Node):
                 target_theta = (target_rad) * (180 / math.pi)
                 print("--- Center --- After target_theta[deg]:",target_theta)
                             
-            #or ((0 <= self.waypoint_number <= 3) and (0 - self.angle_diff <= theta_z <= 0 + self.angle_diff)) \
-            #((25 <= self.waypoint_number <= 28) and (-60 - self.angle_diff <= theta_z <= -60 + self.angle_diff)) \
+                #or ((0 <= self.waypoint_number <= 3) and (0 - self.angle_diff <= theta_z <= 0 + self.angle_diff)) \
+                #((25 <= self.waypoint_number <= 28) and (-60 - self.angle_diff <= theta_z <= -60 + self.angle_diff)) \
+                """
+                or (139 <= self.waypoint_number <= 143 and 0 - self.angle_diff <= theta_z <= 0 + self.angle_diff)
+                or (146 <= self.waypoint_number <= 151 and 0 - self.angle_diff <= theta_z <= 0 + self.angle_diff)
+                or (179 <= self.waypoint_number <= 188 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
+                or (198 <= self.waypoint_number <= 208 and 90 - self.angle_diff <= theta_z <= 90 + self.angle_diff)
+                or (33 <= self.waypoint_number <= 35 and -20 - self.angle_diff <= theta_z <= -20 + self.angle_diff)
+                """
             elif ~np.any(lh_obs) and np.any(rh_obs):   #右寄り　
                 speed = 0.25
-                if (
-                    (18 <= self.waypoint_number <= 20 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
-                    or (139 <= self.waypoint_number <= 143 and 0 - self.angle_diff <= theta_z <= 0 + self.angle_diff)
-                    or (146 <= self.waypoint_number <= 151 and 0 - self.angle_diff <= theta_z <= 0 + self.angle_diff)
-                    or (179 <= self.waypoint_number <= 188 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
-                    or (198 <= self.waypoint_number <= 208 and 90 - self.angle_diff <= theta_z <= 90 + self.angle_diff)
-                    or (33 <= self.waypoint_number <= 35 and -20 - self.angle_diff <= theta_z <= -20 + self.angle_diff)
-                ): #1 3 5 6 7 8
+                if ((190 <= self.waypoint_number <= 200 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))): #1 3 5 6 7 8
                     target_theta = (target_rad) * (180 / math.pi)
                     print("!!!RH!!!! Befor target_theta[deg]:",target_theta)
                     rh_obs_close = max(rh_obs[1,:]) # y0 rh min
@@ -531,7 +780,8 @@ class PathFollower(Node):
             elif np.any(lh_obs) and ~np.any(rh_obs):  #左寄り 11 <= self.waypoint_number <= 12 \ 
                 speed = 0.25
                 if (
-                    (65 <= self.waypoint_number <= 72 and -90 - self.angle_diff <= theta_z <= -90 + self.angle_diff)
+                    (15 <= self.waypoint_number <= 18 and (-30 <= theta_z <= 30 ))
+                    or (65 <= self.waypoint_number <= 72 and -90 - self.angle_diff <= theta_z <= -90 + self.angle_diff)
                     or (162 <= self.waypoint_number <= 168 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
                     or (172 <= self.waypoint_number <= 175 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
                     ):    #2 4
@@ -547,7 +797,17 @@ class PathFollower(Node):
             
             #elif ~np.any(rh_obs) and ~np.any(lh_obs):
             #    speed = 0.25
-                           
+
+        """
+        if self.right_footprint_obs and not self.left_footprint_obs:
+            # 右には寄らない
+            target_theta = max(target_theta, 0.0)
+
+        elif self.left_footprint_obs and not self.right_footprint_obs:
+            # 左には寄らない
+            target_theta = min(target_theta, 0.0)   
+        """
+                       
         lim_steer = 20
         #lim_steer = 30 24/11/29 ok
         #if abs(target_theta) < 10 and 0.0 < speed and speed < 0.5:
@@ -569,6 +829,67 @@ class PathFollower(Node):
         if np.any(c_obs_back) :
             speed = 0.10
 
+        # =========================================
+        # 左右の空間を比較して回避方向を決める
+        # =========================================
+        if np.any(left_mask):
+            left_clearance = np.min(obs_dist[left_mask])
+        else:
+            left_clearance = 1.5
+        #print(f"left_clearance ={left_clearance}")
+        if np.any(right_mask):
+            right_clearance = np.min(obs_dist[right_mask])
+        else:
+            right_clearance = 1.5
+        #print(f"right_clearance ={right_clearance}")
+
+        if (self.forward_obs == 1):
+            if left_clearance > right_clearance + 0.1:
+                if(self.right_back_obs == 1):
+                    target_theta += 7.5
+                else:
+                    target_theta += 15.0
+                    print("Turn left")
+            elif right_clearance > left_clearance + 0.1:
+                if(self.left_back_obs == 1):
+                    target_theta += -7.5
+                else:
+                    target_theta += -15.0
+                    print("Turn right")
+
+            else:
+                speed = -0.20
+                target_theta = 0
+                print("Can not kaihi!")
+        # ==========================================
+        # Back footprintによる旋回禁止
+        # ==========================================
+
+        if target_theta > 5.0:
+
+            # 左旋回
+            if self.right_back_obs == 1:
+
+                #print("左旋回禁止：右後方に障害物")
+
+                speed = 0.05
+                target_theta = 0.0
+                target_rad = 0.0
+
+
+
+        elif target_theta < -5.0:
+
+            # 右旋回
+            if self.left_back_obs == 1:
+
+                #print("右旋回禁止：左後方に障害物")
+                speed = 0.10
+                target_theta = 0.0
+                target_rad = 0.0
+
+        self.get_logger().info(f"speed={speed}")
+        
         
         ################# IGVC SelfDrive Full #20250601# #################
         if self.sd_full_flag == 1:
@@ -680,6 +1001,7 @@ class PathFollower(Node):
                     self.time_restart = 0
                     self.stop_flag = 0
         #################################################################################
+        #################################################################################
         
         
         
@@ -705,6 +1027,12 @@ class PathFollower(Node):
             twist_msg.angular.z = 0.0  # 角速度 (rad/s)
         
         self.cmd_vel_publisher.publish(twist_msg)
+        # self.publish_robot_footprint()
+        ##self.publish_right_swept_footprint()
+        self.publish_forward_obs_area()
+        self.publish_rf_area()
+        #self.publish_right_back_footprint()
+        #self.publish_left_back_footprint()
         #self.get_logger().info('Publishing cmd_vel: linear.x = %f, angular.z = %f : %f deg' % (twist_msg.linear.x, twist_msg.angular.z, math.degrees(twist_msg.angular.z)))
         
     def set_target_rad(self, path, position_x, position_y, target_dist, theta_x, theta_y, theta_z):
@@ -852,6 +1180,176 @@ class PathFollower(Node):
         obs_test_msg = point_cloud_intensity_msg(ch_obs.T, t_stamp, 'odom')
         self.pcd_test_publisher.publish(obs_test_msg) 
         self.pcd_test_publisher.publish(obs_jam_msg)
+        # 緊急回避footprint
+        self.rf_out_points = self.pcd_serch(
+            points,
+            self.rf_out_x_min,
+            self.rf_out_x_max,
+            self.rf_out_y_min,
+            self.rf_out_y_max
+        )
+        
+        self.rf_second_out_points = self.pcd_serch(
+            points,
+            self.rf_second_out_x_min,
+            self.rf_second_out_x_max,
+            self.rf_second_out_y_min,
+            self.rf_second_out_y_max
+        )
+
+        self.rf_center_points = self.pcd_serch(
+            points,
+            self.rf_center_x_min,
+            self.rf_center_x_max,
+            self.rf_center_y_min,
+            self.rf_center_y_max
+        )
+
+        self.rf_second_in_points = self.pcd_serch(
+            points,
+            self.rf_second_in_x_min,
+            self.rf_second_in_x_max,
+            self.rf_second_in_y_min,
+            self.rf_second_in_y_max
+        )
+        
+        self.rf_in_points = self.pcd_serch(
+            points,
+            self.rf_in_x_min,
+            self.rf_in_x_max,
+            self.rf_in_y_min,
+            self.rf_in_y_max
+        )
+
+        self.out_obs_count = len(self.rf_out_points[0,:])
+        if self.out_obs_count >= 5:
+            self.out_obs = 1
+        else:
+            self.out_obs = 0
+        
+        self.second_out_obs_count = len(self.rf_second_out_points[0,:])
+        if self.second_out_obs_count >= 5:
+            self.second_out_obs = 1
+        else:
+            self.second_out_obs = 0
+
+        self.center_obs_count = len(self.rf_center_points[0,:])
+        if self.center_obs_count >= 5:
+            self.center_obs = 1
+        else:
+            self.center_obs = 0
+
+        self.second_in_obs_count = len(self.rf_second_in_points[0,:])
+        if self.second_in_obs_count >= 5:
+            self.second_in_obs = 1
+        else:
+            self.second_in_obs = 0
+
+        self.in_obs_count = len(self.rf_in_points[0,:])
+        if self.in_obs_count >= 5:
+            self.in_obs = 1
+        else:
+            self.in_obs = 0
+        
+
+        ######################### robot footprint #########################
+        self.right_robot_footprint_points = self.pcd_serch(
+            points,
+            self.footprint_x_min,
+            self.footprint_x_max,
+            self.center_footprint_y,
+            self.right_footprint_y
+        )
+
+        self.left_robot_footprint_points = self.pcd_serch(
+            points,
+            self.footprint_x_min,
+            self.footprint_x_max,
+            self.center_footprint_y,
+            self.left_footprint_y
+        )
+        self.right_obs_count = len(self.right_robot_footprint_points[0,:])
+        if self.right_obs_count >= 5:
+            self.right_footprint_obs = 1
+        else:
+            self.right_footprint_obs = 0
+
+        self.left_obs_count = len(self.left_robot_footprint_points[0,:])
+        if self.left_obs_count >= 5:
+            self.left_footprint_obs = 1
+        else:
+            self.left_footprint_obs = 0
+        ######################### forward obs area #########################
+        self.forward_obs_area = self.pcd_serch(
+            points,
+            self.forward_x_min,
+            self.forward_x_max,
+            self.forward_y_min,
+            self.forward_y_max
+        )
+        self.forward_obs_count = len(self.forward_obs_area[0,:])
+        if self.forward_obs_count >= 5:
+            self.forward_obs = 1
+        else:
+            self.forward_obs = 0
+
+
+        ######################### back footprint #########################
+        right_center_x = -0.50
+        right_center_y = -0.325
+        left_center_x = -0.50
+        left_center_y = 0.325
+        
+        # ==========================================
+        # 危険ゾーンの大きさ
+        # ==========================================
+
+        zone_x = 0.20
+        zone_y = 0.20
+
+        right_x_min = right_center_x - zone_x / 2
+        right_x_max = right_center_x + zone_x / 2
+
+        right_y_min = right_center_y - zone_y / 2
+        right_y_max = right_center_y + zone_y / 2
+
+        left_x_min = left_center_x - zone_x / 2
+        left_x_max = left_center_x + zone_x / 2
+
+        left_y_min = left_center_y - zone_y / 2
+        left_y_max = left_center_y + zone_y / 2
+        
+        self.right_back_points = self.pcd_serch(
+            points,
+            right_x_min,
+            right_x_max,
+            right_y_min,
+            right_y_max
+        )
+
+        self.left_back_points = self.pcd_serch(
+            points,
+            left_x_min,
+            left_x_max,
+            left_y_min,
+            left_y_max
+        )
+
+        self.right_count = len(self.right_back_points[0,:])
+        self.left_count = len(self.left_back_points[0,:])
+
+        
+        if self.right_count >= 5:
+            self.right_back_obs = 1
+            #print("right_back_obs")
+        else:
+            self.right_back_obs = 0
+
+        if self.left_count >= 5:
+            self.left_back_obs = 1
+            #print("left_back_obs")
+        else:
+            self.left_back_obs = 0
     
     def low_obs_steer(self, msg):
         

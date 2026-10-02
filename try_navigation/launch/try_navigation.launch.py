@@ -32,7 +32,7 @@ def generate_launch_description():
     waypoint_path = LaunchConfiguration('waypoint_path')
     declare_waypoint_arg = DeclareLaunchArgument(
         'waypoint_path',
-        default_value='kbkn_maps/waypoints/tsukuba/2025/papa/tsukuba_waypoint.yaml',
+        default_value='kbkn_maps/waypoints/tsukuba/2026/tukuba_kakunin.yaml',
         description='waypoint name'
     )
     #kbkn_maps/waypoints/tsukuba/2025/papa/tsukuba_waypoint.yaml
@@ -138,11 +138,11 @@ def generate_launch_description():
         ),
         #robot ctrl
         #Node(package='try_navigation',
-        #    executable='path_follower',
-        #    name='path_follower_node',
-        #    output='screen',
-        #    parameters=[{'odom': odom}],
-        #    arguments=[],
+         #   executable='path_follower',
+          #  name='path_follower_node',
+           # output='screen',
+            #parameters=[{'odom': odom}],
+            #arguments=[],
         #),
         
         #navigation start
@@ -154,10 +154,10 @@ def generate_launch_description():
         ),
         #takamori Autonav
         #Node(package='try_navigation',
-        #    executable='reflection_to_pcd',
-        #    name='reflection_to_pcd',
-        #    output='screen',
-        #    arguments=[],
+         #   executable='reflection_to_pcd',
+          #  name='reflection_to_pcd',
+           # output='screen',
+            #arguments=[],
         #),
         #takamori Selfdrive
         #Node(package='try_navigation',

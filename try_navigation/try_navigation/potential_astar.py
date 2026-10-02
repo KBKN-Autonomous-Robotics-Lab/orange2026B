@@ -60,7 +60,7 @@ class PotentialAStar(Node):
         
         # set parameter (launch can change this parameter)
         self.declare_parameter('odom', '/fusion/odom')
-        
+        #self.declare_parameter('odom', '/odom/wheel_imu')
         # define parameter
         odom_topic = self.get_parameter('odom').get_parameter_value().string_value
         
@@ -130,6 +130,8 @@ class PotentialAStar(Node):
         self.left_number = 0 # front stop:None lanechange:1 Q1:0
         self.dot_number = 0 # front stop:0 lanechange:0 Q1:0
         
+        # robotfootprint
+        self.robot_clearance = 0.30
         #map_obs
         self.map_obs_points = np.array([[],[],[]])
         
@@ -161,25 +163,25 @@ class PotentialAStar(Node):
             #   0       1     2        3         4         5        6       7
             #tire pothole human stopsign whiteline rightline leftline dotline
             [   0,      0,    0,       1,        1,        0,       0,      0], # waypoint  0 front stop
-            [   0,      0,    0,       1,        0,        1,       0,      0], # waypoint  1 front r lane
+            [   0,      0,    0,       1,        1,        1,       0,      0], # waypoint  1 front r lane
             [   0,      0,    0,       0,        1,        0,       0,      1], # waypoint  2 curve
             [   0,      0,    0,       0,        1,        0,       0,      1], # waypoint  3 front barrel
-            [   0,      0,    0,       0,        0,        1,       1,      0], # waypoint  4 next barrel :lanechange
+            [   0,      0,    0,       0,        1,        1,       1,      0], # waypoint  4 next barrel :lanechange
             [   0,      0,    0,       0,        1,        1,       1,      0], # waypoint  5 front barrel
-            [   0,      0,    0,       0,        0,        1,       1,      0], # waypoint  6 next barrel :lanechange
+            [   0,      0,    0,       0,        1,        1,       1,      0], # waypoint  6 next barrel :lanechange
             [   0,      0,    0,       2,        1,        0,       0,      1], # waypoint  7 front stop
-            [   0,      0,    0,       2,        0,        1,       0,      0], # waypoint  8 intersection
-            [   0,      0,    0,       0,        0,        0,       0,      0], # waypoint  9 front stop
-            [   0,      0,    1,       0,        0,        1,       0,      0], # waypoint 10 intersection :human
+            [   0,      0,    0,       2,        1,        1,       0,      0], # waypoint  8 intersection
+            [   0,      0,    0,       0,        1,        0,       0,      0], # waypoint  9 front stop
+            [   0,      0,    1,       0,        1,        1,       0,      0], # waypoint 10 intersection :human
             [   0,      0,    1,       0,        1,        0,       0,      0], # waypoint 11 front r lane
             [   0,      0,    0,       0,        1,        0,       0,      1], # waypoint 12 curve
             [   0,      0,    0,       0,        1,        0,       0,      1], # waypoint 13 front pothole
-            [   0,      1,    0,       0,        0,        1,       1,      0], # waypoint 14 next pothole :lanechange
+            [   0,      1,    0,       0,        1,        1,       1,      0], # waypoint 14 next pothole :lanechange
             [   0,      0,    0,       0,        1,        0,       0,      1], # waypoint 15 front tire
-            [   1,      0,    0,       0,        0,        1,       1,      0], # waypoint 16 next tire :lanechange
+            [   1,      0,    0,       0,        1,        1,       1,      0], # waypoint 16 next tire :lanechange
             [   0,      0,    0,       0,        1,        0,       0,      1], # waypoint 17 curve
             [   0,      0,    0,       3,        1,        0,       0,      1], # waypoint 18 front stop
-            [   0,      0,    0,       3,        0,        1,       0,      0], # waypoint 19 intersection
+            [   0,      0,    0,       3,        1,        1,       0,      0], # waypoint 19 intersection
             [   0,      0,    0,       0,        1,        0,       0,      0], # waypoint 20 front r lane
             [   0,      0,    0,       0,        1,        0,       0,      0]  # waypoint 21 GOAL!!!!!!
         ]
@@ -230,7 +232,11 @@ class PotentialAStar(Node):
         relative_point_rot, t_point_rot_matrix = rotation_xyz(relative_point, self.theta_x, self.theta_y, -self.theta_z)
         
         self.wp_xy = [relative_point_rot[0], relative_point_rot[1]]
-    
+        #print("waypoint =", self.waypoint[0], self.waypoint[1])
+        #print("position =", self.position_x, self.position_y)
+        #print("relative =", relative_point_x, relative_point_y)
+        #print("wp_xy =", self.wp_xy)
+
     def get_waypoint_number(self, msg):
         #get waypoint number
         self.waypoint_number = msg.data
@@ -383,7 +389,7 @@ class PotentialAStar(Node):
         #print(f"points ={points.shape}")
         
         self.shibafu_obs_points = np.vstack((points[0,:], points[1,:], points[2,:]))
-            
+                
     def potential_astar(self, msg):
         
         #print stamp message
@@ -519,8 +525,8 @@ class PotentialAStar(Node):
         obs15 = make_obs(270.96,270.52,-57.33, -61.25) # singou
         obs16 = make_obs(269.96,273.12,-57.33, -57.05) # singou
 
-        self.tsukuba_obs = np.hstack((obs1, obs4, obs5, obs6, obs7, obs8, obs9, obs10, obs11, obs12, obs13, obs14, obs15, obs16))
-        #self.tsukuba_obs = np.hstack((obs7,obs1))
+        #self.tsukuba_obs = np.hstack((obs1, obs4, obs5, obs6, obs7, obs8, obs9, obs10, obs11, obs12, obs13, obs14, obs15, obs16))
+        self.tsukuba_obs = np.hstack((obs15,obs16))
         
         #map_obs add
         if len(self.tsukuba_obs[0,:])>0:
@@ -577,7 +583,7 @@ class PotentialAStar(Node):
         points_round = np.round(obs_points * self.obs_pixel) / self.obs_pixel
         obs_xy_local = points_round[:,~pd.DataFrame({"x":points_round[0,:], "y":points_round[1,:]}).duplicated()]
         obs_xy = np.vstack((obs_xy_local[0,:], obs_xy_local[1,:]))
-        
+        #print("before inflate =", obs_xy.shape)
         #print(f"obs_points ={obs_points.shape}")
         reflect_set = obs_points[2,~pd.DataFrame({"x":points_round[0,:], "y":points_round[1,:]}).duplicated()]
         #obs global
@@ -591,8 +597,23 @@ class PotentialAStar(Node):
         #set self position
         #self.est_xy = [self.position_x, self.position_y]
         #print(f"self.est_xy ={self.est_xy}")
-        
+        #obs_xy_inflated = self.inflate_obstacles(obs_xy, inflation_radius=0.30)
+        #print("position =", self.position_x, self.position_y)
+        #print("wp_xy =", self.wp_xy)
+        #print("after inflate =", obs_xy_inflated.shape)
+        # 後方の障害物を一時的に除外
+        # x < 0 かつ |y| < 2 m の点を除外
+        rear_mask = (obs_xy[0, :] < 0.0) & (np.abs(obs_xy[1, :]) < 2.0)
+
+        #print("original obs =", obs_xy.shape[1])
+        #print("rear obs     =", np.sum(rear_mask))
+
+        obs_xy_test = obs_xy[:, ~rear_mask]
+
+        #print("after remove =", obs_xy_test.shape[1])
         astar_path = self.path_plan(obs_xy)
+        
+        #astar_path = self.path_plan(obs_xy_inflated)
         #print(f"astar_path ={astar_path.shape}")
         astar_path = np.vstack((astar_path, np.zeros([1,len(astar_path[0,:])]) ))
         #print(f"astar_path ={astar_path.shape}")
@@ -637,12 +658,43 @@ class PotentialAStar(Node):
             obs_short = np.sqrt((obs_xy[0]-astar_x[astar_xn])**2 + (obs_xy[1]-astar_y[astar_yn])**2 ) < 2 # 2　前は2だったけどとりあえずテスト中は5に
             obs_short_x = obs_xy[0, np.array(obs_short) ]
             obs_short_y = obs_xy[1, np.array(obs_short) ]
+            #print("current =", astar_x[astar_xn], astar_y[astar_yn])
+            #print("near obstacle =", len(obs_short_x))
+            #print("current =", astar_x[astar_xn], astar_y[astar_yn],"near =", len(obs_short_x))
+            """
+            print(
+                "obs_x range =",
+                np.min(obs_short_x) if len(obs_short_x) > 0 else None,
+                np.max(obs_short_x) if len(obs_short_x) > 0 else None
+            )
+
+            print(
+                "obs_y range =",
+                np.min(obs_short_y) if len(obs_short_y) > 0 else None,
+                np.max(obs_short_y) if len(obs_short_y) > 0 else None
+            )
+            """
+            """
+            # 障害物の点群数を100点に間引き
+            if len(obs_short_x) > 100:
+                index = np.linspace(
+                    0,
+                    len(obs_short_x) - 1,
+                    100
+                ).astype(int)
+
+                obs_short_x = obs_short_x[index]
+                obs_short_y = obs_short_y[index]
+            """
             #astar_uo_x = astar_x_search -  obs_xy[0].reshape(len(obs_xy[0]),1) #x-xo 斥力計算　探索ポイントｘ近場にある障害物を全て行列使って計算
             #astar_uo_y = astar_y_search -  obs_xy[1].reshape(len(obs_xy[1]),1) #y-yo 斥力計算　探索ポイントｘ近場にある障害物を全て行列使って計算
             astar_uo_x = astar_x_search -  obs_short_x.reshape(len(obs_short_x),1) #x-xo 斥力計算　探索ポイントｘ近場にある障害物を全て行列使って計算
             astar_uo_y = astar_y_search -  obs_short_y.reshape(len(obs_short_y),1) #y-yo 斥力計算　探索ポイントｘ近場にある障害物を全て行列使って計算
             astar_uo_x2 = ( astar_uo_x * np.ones([len(obs_short_x),len(astar_x_search)]) ) ** 2 #(x-xo)^2
             astar_uo_y2 = ( astar_uo_y * np.ones([len(obs_short_y),len(astar_y_search)]) ) ** 2 #(y-yo)^2
+            distance = np.sqrt(astar_uo_x**2 + astar_uo_y**2)
+            distance = np.maximum(distance - self.robot_clearance, 0.01)
+            #astar_uo = 0.01 * np.sum(co * np.exp(- (distance**2) / lo**2)) (tsuika)
             astar_uo = sum(co * np.exp(- (astar_uo_x2 + astar_uo_y2) / lo**2 ) ) # Uo計算 sum{co*e(-((x-xo)^2+(y-yo)^2)/lo^2)}
             astar_u=(1/cg*astar_uo+1)*astar_ug #UgとUoでポテンシャル計算
             astar_xy[[astar_xn,astar_xn-1,astar_xn,astar_xn+1,astar_xn],[astar_yn-1,astar_yn,astar_yn,astar_yn,astar_yn+1]] = astar_u #代入
