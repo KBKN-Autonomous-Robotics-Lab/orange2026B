@@ -525,8 +525,8 @@ class PotentialAStar(Node):
         obs15 = make_obs(270.96,270.52,-57.33, -61.25) # singou
         obs16 = make_obs(269.96,273.12,-57.33, -57.05) # singou
 
-        #self.tsukuba_obs = np.hstack((obs1, obs4, obs5, obs6, obs7, obs8, obs9, obs10, obs11, obs12, obs13, obs14, obs15, obs16))
-        self.tsukuba_obs = np.hstack((obs15,obs16))
+        self.tsukuba_obs = np.hstack((obs1, obs4, obs5, obs6, obs7, obs8, obs9, obs10, obs11, obs12, obs13, obs14, obs15, obs16))
+        #self.tsukuba_obs = np.hstack((obs15,obs16))
         
         #map_obs add
         if len(self.tsukuba_obs[0,:])>0:

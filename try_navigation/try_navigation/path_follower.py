@@ -780,7 +780,7 @@ class PathFollower(Node):
             elif np.any(lh_obs) and ~np.any(rh_obs):  #左寄り 11 <= self.waypoint_number <= 12 \ 
                 speed = 0.25
                 if (
-                    (15 <= self.waypoint_number <= 18 and (-30 <= theta_z <= 30 ))
+                    (16 <= self.waypoint_number <= 18 and (-120 <= theta_z <= -60 ))
                     or (65 <= self.waypoint_number <= 72 and -90 - self.angle_diff <= theta_z <= -90 + self.angle_diff)
                     or (162 <= self.waypoint_number <= 168 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
                     or (172 <= self.waypoint_number <= 175 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
