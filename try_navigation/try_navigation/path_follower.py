@@ -434,12 +434,28 @@ class PathFollower(Node):
                     target_rad = math.atan2(cx, cf)
                     target_theta = (target_rad) * (180 / math.pi)
                     print("!!!RH!!!! After target_theta[deg]:",target_theta)
+
+            elif np.any(lh_obs): #左の障害物のみを監視
+                speed = 0.25
+                if(
+                    (16 <= self.waypoint_number <= 18 and (-120 <= theta_z <= -60))
+                ):
+                    target_theta = (target_rad) * (180 / math.pi)
+                    print("!!!LH!!!! Befor target_theta[deg]:",target_theta)
+                    lh_obs_close = min(lh_obs[1,:]) # y0 lh min
+                    lh_dist = -0.65 # 0.65
+                    if self.waypoint_number==16:
+                        lh_dist = -0.45 # 0.65
+                    cy = cf
+                    cx = lh_obs_close + lh_dist
+                    target_rad = math.atan2(cx, cf)
+                    target_theta = (target_rad) * (180 / math.pi)
+                    print("!!!LH!!!! After target_theta[deg]:",target_theta)
                     
             elif np.any(lh_obs) and ~np.any(rh_obs):  #左寄り 11 <= self.waypoint_number <= 12 \ 
                 speed = 0.25
                 if (
-                    (15 <= self.waypoint_number <= 17 and (-120 <= theta_z <= -60))
-                    or (162 <= self.waypoint_number <= 168 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
+                    (162 <= self.waypoint_number <= 168 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
                     or (172 <= self.waypoint_number <= 175 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
                     ):    #2 4
                     target_theta = (target_rad) * (180 / math.pi)
