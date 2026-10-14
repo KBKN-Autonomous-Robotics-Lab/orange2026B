@@ -1,0 +1,86 @@
+running egg_info
+creating ../build/orange_gnss/orange_gnss.egg-info
+writing ../build/orange_gnss/orange_gnss.egg-info/PKG-INFO
+writing dependency_links to ../build/orange_gnss/orange_gnss.egg-info/dependency_links.txt
+writing entry points to ../build/orange_gnss/orange_gnss.egg-info/entry_points.txt
+writing requirements to ../build/orange_gnss/orange_gnss.egg-info/requires.txt
+writing top-level names to ../build/orange_gnss/orange_gnss.egg-info/top_level.txt
+writing manifest file '../build/orange_gnss/orange_gnss.egg-info/SOURCES.txt'
+reading manifest file '../build/orange_gnss/orange_gnss.egg-info/SOURCES.txt'
+writing manifest file '../build/orange_gnss/orange_gnss.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ubuntu/my_work/orange2026B/build/orange_gnss/build
+creating /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib
+creating /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/get_movingbase_quat_ttyUSB.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/fix_to_GPSodom.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/ekf_myself_tmp.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/GPSodom_correction.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/gnss_odom_publisher_ttyUSB.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/get_lonlat_ttyACM.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/get_lonlat_ttyUSB.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/ekf_myself.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/odom_combination.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/__init__.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/gnss_odom_movingbase_fix_publisher_ttyUSB.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/combination.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/ekf_myself_noGPS.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/movingbase_yaw_to_quat.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+copying orange_gnss/lonlat_to_odom.py -> /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss
+running install
+running install_lib
+creating /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/get_movingbase_quat_ttyUSB.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/fix_to_GPSodom.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/ekf_myself_tmp.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/GPSodom_correction.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/gnss_odom_publisher_ttyUSB.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/get_lonlat_ttyACM.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/get_lonlat_ttyUSB.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/ekf_myself.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/odom_combination.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/__init__.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/gnss_odom_movingbase_fix_publisher_ttyUSB.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/combination.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/ekf_myself_noGPS.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/movingbase_yaw_to_quat.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+copying /home/ubuntu/my_work/orange2026B/build/orange_gnss/build/lib/orange_gnss/lonlat_to_odom.py -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/get_movingbase_quat_ttyUSB.py to get_movingbase_quat_ttyUSB.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/fix_to_GPSodom.py to fix_to_GPSodom.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/ekf_myself_tmp.py to ekf_myself_tmp.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/GPSodom_correction.py to GPSodom_correction.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/gnss_odom_publisher_ttyUSB.py to gnss_odom_publisher_ttyUSB.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/get_lonlat_ttyACM.py to get_lonlat_ttyACM.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/get_lonlat_ttyUSB.py to get_lonlat_ttyUSB.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/ekf_myself.py to ekf_myself.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/odom_combination.py to odom_combination.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/gnss_odom_movingbase_fix_publisher_ttyUSB.py to gnss_odom_movingbase_fix_publisher_ttyUSB.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/combination.py to combination.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/ekf_myself_noGPS.py to ekf_myself_noGPS.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/movingbase_yaw_to_quat.py to movingbase_yaw_to_quat.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss/lonlat_to_odom.py to lonlat_to_odom.cpython-310.pyc
+running install_data
+creating /home/ubuntu/my_work/orange2026B/install/orange_gnss/share/ament_index
+creating /home/ubuntu/my_work/orange2026B/install/orange_gnss/share/ament_index/resource_index
+creating /home/ubuntu/my_work/orange2026B/install/orange_gnss/share/ament_index/resource_index/packages
+copying resource/orange_gnss -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/share/ament_index/resource_index/packages
+copying package.xml -> /home/ubuntu/my_work/orange2026B/install/orange_gnss/share/orange_gnss
+running install_egg_info
+Copying ../build/orange_gnss/orange_gnss.egg-info to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/python3.10/site-packages/orange_gnss-0.0.0-py3.10.egg-info
+running install_scripts
+Installing GPSodom_correction script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing combination script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing ekf_myself script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing ekf_myself_noGPS script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing fix_to_GPSodom script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing get_lonlat_ttyACM script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing get_lonlat_ttyUSB script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing get_movingbase_quat_ttyUSB script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing gnss_odom_movingbase_fix_publisher_ttyUSB script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing gnss_odom_publisher_ttyUSB script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing lonlat_to_odom script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing movingbase_yaw_to_quat script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+Installing odom_combination script to /home/ubuntu/my_work/orange2026B/install/orange_gnss/lib/orange_gnss
+writing list of installed files to '/home/ubuntu/my_work/orange2026B/build/orange_gnss/install.log'

@@ -1,0 +1,53 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/ubuntu/my_work/orange2026B/build/orange_description
+-- Install configuration: ""
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//meshes
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//meshes/right_caster.dae
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//meshes/hokuyo.dae
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//meshes/left_caster.dae
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//meshes/velodyne.dae
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//meshes/front_wheel.dae
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//meshes/chassis.dae
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//xacro
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//xacro/orange_robot.gazebo
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//xacro/orange_robot.xacro
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//xacro/sensors
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//xacro/sensors/imu.xacro
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//xacro/sensors/hokuyo.xacro
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//xacro/sensors/livox.xacro
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//xacro/sensors/velodyne.xacro
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//rviz2
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//rviz2/navigation2.rviz
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//rviz2/slam_toolbox.rviz
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//rviz2/cartographer.rviz
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description//rviz2/orange_robot.rviz
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/ament_index/resource_index/package_run_dependencies/orange_description
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/ament_index/resource_index/parent_prefix_path/orange_description
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/environment/ament_prefix_path.sh
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/environment/ament_prefix_path.dsv
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/environment/path.sh
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/environment/path.dsv
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/local_setup.bash
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/local_setup.sh
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/local_setup.zsh
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/local_setup.dsv
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/package.dsv
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/ament_index/resource_index/packages/orange_description
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/cmake/orange_descriptionConfig.cmake
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/cmake/orange_descriptionConfig-version.cmake
+-- Installing: /home/ubuntu/my_work/orange2026B/install/orange_description/share/orange_description/package.xml

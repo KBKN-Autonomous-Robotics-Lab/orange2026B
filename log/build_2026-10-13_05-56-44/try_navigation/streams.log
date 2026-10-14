@@ -1,0 +1,36 @@
+[2.565s] Invoking command in '/home/ubuntu/my_work/orange2026B/try_navigation': PYTHONPATH=/home/ubuntu/my_work/orange2026B/build/try_navigation/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/try_navigation build --build-base /home/ubuntu/my_work/orange2026B/build/try_navigation/build install --record /home/ubuntu/my_work/orange2026B/build/try_navigation/install.log --single-version-externally-managed install_data
+[3.005s] running egg_info
+[3.006s] writing ../build/try_navigation/try_navigation.egg-info/PKG-INFO
+[3.007s] writing dependency_links to ../build/try_navigation/try_navigation.egg-info/dependency_links.txt
+[3.007s] writing entry points to ../build/try_navigation/try_navigation.egg-info/entry_points.txt
+[3.007s] writing requirements to ../build/try_navigation/try_navigation.egg-info/requires.txt
+[3.007s] writing top-level names to ../build/try_navigation/try_navigation.egg-info/top_level.txt
+[3.012s] reading manifest file '../build/try_navigation/try_navigation.egg-info/SOURCES.txt'
+[3.012s] adding license file 'LICENSE'
+[3.014s] writing manifest file '../build/try_navigation/try_navigation.egg-info/SOURCES.txt'
+[3.014s] running build
+[3.014s] running build_py
+[3.016s] running install
+[3.016s] running install_lib
+[3.019s] running install_data
+[3.020s] running install_egg_info
+[3.023s] removing '/home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation-0.0.0-py3.10.egg-info' (and everything under it)
+[3.024s] Copying ../build/try_navigation/try_navigation.egg-info to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation-0.0.0-py3.10.egg-info
+[3.026s] running install_scripts
+[3.060s] Installing ekf_myself_gps script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.062s] Installing ekf_myself_match script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.065s] Installing ekf_myself_odom script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.065s] Installing map_check script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.065s] Installing marker_utils script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.065s] Installing odom_wheel script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.066s] Installing path_follower script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.066s] Installing pcd_buffer script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.066s] Installing potential_astar script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.066s] Installing reflection_intensity_map script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.066s] Installing reflection_to_pcd script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.066s] Installing reflection_to_pcd_dbscan script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.066s] Installing self_drive_line script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.066s] Installing waypoint_manager script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.066s] Installing waypoint_manager_maprun script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[3.067s] writing list of installed files to '/home/ubuntu/my_work/orange2026B/build/try_navigation/install.log'
+[3.174s] Invoked command in '/home/ubuntu/my_work/orange2026B/try_navigation' returned '0': PYTHONPATH=/home/ubuntu/my_work/orange2026B/build/try_navigation/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/try_navigation build --build-base /home/ubuntu/my_work/orange2026B/build/try_navigation/build install --record /home/ubuntu/my_work/orange2026B/build/try_navigation/install.log --single-version-externally-managed install_data

@@ -1,0 +1,40 @@
+running egg_info
+creating ../build/orange_teleop/orange_teleop.egg-info
+writing ../build/orange_teleop/orange_teleop.egg-info/PKG-INFO
+writing dependency_links to ../build/orange_teleop/orange_teleop.egg-info/dependency_links.txt
+writing entry points to ../build/orange_teleop/orange_teleop.egg-info/entry_points.txt
+writing requirements to ../build/orange_teleop/orange_teleop.egg-info/requires.txt
+writing top-level names to ../build/orange_teleop/orange_teleop.egg-info/top_level.txt
+writing manifest file '../build/orange_teleop/orange_teleop.egg-info/SOURCES.txt'
+reading manifest file '../build/orange_teleop/orange_teleop.egg-info/SOURCES.txt'
+writing manifest file '../build/orange_teleop/orange_teleop.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ubuntu/my_work/orange2026B/build/orange_teleop/build
+creating /home/ubuntu/my_work/orange2026B/build/orange_teleop/build/lib
+creating /home/ubuntu/my_work/orange2026B/build/orange_teleop/build/lib/orange_teleop
+copying orange_teleop/__init__.py -> /home/ubuntu/my_work/orange2026B/build/orange_teleop/build/lib/orange_teleop
+copying orange_teleop/teleop_twist_keyboard.py -> /home/ubuntu/my_work/orange2026B/build/orange_teleop/build/lib/orange_teleop
+running install
+running install_lib
+creating /home/ubuntu/my_work/orange2026B/install/orange_teleop/lib/python3.10/site-packages/orange_teleop
+copying /home/ubuntu/my_work/orange2026B/build/orange_teleop/build/lib/orange_teleop/__init__.py -> /home/ubuntu/my_work/orange2026B/install/orange_teleop/lib/python3.10/site-packages/orange_teleop
+copying /home/ubuntu/my_work/orange2026B/build/orange_teleop/build/lib/orange_teleop/teleop_twist_keyboard.py -> /home/ubuntu/my_work/orange2026B/install/orange_teleop/lib/python3.10/site-packages/orange_teleop
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_teleop/lib/python3.10/site-packages/orange_teleop/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_teleop/lib/python3.10/site-packages/orange_teleop/teleop_twist_keyboard.py to teleop_twist_keyboard.cpython-310.pyc
+running install_data
+creating /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/ament_index
+creating /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/ament_index/resource_index
+creating /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/ament_index/resource_index/packages
+copying resource/orange_teleop -> /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/ament_index/resource_index/packages
+copying package.xml -> /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/orange_teleop
+creating /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/orange_teleop/launch
+copying launch/teleop_joy.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/orange_teleop/launch
+copying launch/teleop_keyboard.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/orange_teleop/launch
+creating /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/orange_teleop/config
+copying config/dualsense.yaml -> /home/ubuntu/my_work/orange2026B/install/orange_teleop/share/orange_teleop/config
+running install_egg_info
+Copying ../build/orange_teleop/orange_teleop.egg-info to /home/ubuntu/my_work/orange2026B/install/orange_teleop/lib/python3.10/site-packages/orange_teleop-0.0.0-py3.10.egg-info
+running install_scripts
+Installing teleop_twist_keyboard script to /home/ubuntu/my_work/orange2026B/install/orange_teleop/lib/orange_teleop
+writing list of installed files to '/home/ubuntu/my_work/orange2026B/build/orange_teleop/install.log'

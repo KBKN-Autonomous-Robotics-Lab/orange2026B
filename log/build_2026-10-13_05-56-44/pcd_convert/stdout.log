@@ -1,0 +1,30 @@
+running egg_info
+writing ../build/pcd_convert/pcd_convert.egg-info/PKG-INFO
+writing dependency_links to ../build/pcd_convert/pcd_convert.egg-info/dependency_links.txt
+writing entry points to ../build/pcd_convert/pcd_convert.egg-info/entry_points.txt
+writing requirements to ../build/pcd_convert/pcd_convert.egg-info/requires.txt
+writing top-level names to ../build/pcd_convert/pcd_convert.egg-info/top_level.txt
+reading manifest file '../build/pcd_convert/pcd_convert.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file '../build/pcd_convert/pcd_convert.egg-info/SOURCES.txt'
+running build
+running build_py
+copying pcd_convert/pcd_rotation.py -> /home/ubuntu/my_work/orange2026B/build/pcd_convert/build/lib/pcd_convert
+copying pcd_convert/pcd_height_segmentation.py -> /home/ubuntu/my_work/orange2026B/build/pcd_convert/build/lib/pcd_convert
+running install
+running install_lib
+copying /home/ubuntu/my_work/orange2026B/build/pcd_convert/build/lib/pcd_convert/pcd_rotation.py -> /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert
+copying /home/ubuntu/my_work/orange2026B/build/pcd_convert/build/lib/pcd_convert/pcd_height_segmentation.py -> /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert
+byte-compiling /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert/pcd_rotation.py to pcd_rotation.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert/pcd_height_segmentation.py to pcd_height_segmentation.cpython-310.pyc
+running install_data
+running install_egg_info
+removing '/home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../build/pcd_convert/pcd_convert.egg-info to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert-0.0.0-py3.10.egg-info
+running install_scripts
+Installing pcd_height_segmentation script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+Installing pcd_height_segmentation_lidar2 script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+Installing pcd_reflect_segmentation script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+Installing pcd_rotation script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+Installing pcd_rotation_lidar2 script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+writing list of installed files to '/home/ubuntu/my_work/orange2026B/build/pcd_convert/install.log'

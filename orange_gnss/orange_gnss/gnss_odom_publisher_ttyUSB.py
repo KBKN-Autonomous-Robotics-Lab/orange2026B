@@ -10,23 +10,42 @@ from std_msgs.msg import Header, String
 import threading
 import time
 from my_msgs.srv import Avglatlon
+def excel_like_degmin(dd: float) -> float:
+    """
+    Excelでやっていた変換を再現
+    10進度 dd.dddddd の小数部に 60 を掛けて、100 で割って度に足す
 
+    例:
+        35.709649 -> 35 + (0.709649 * 60) / 100 = 35.4257894
+
+    注意:
+        これは一般的な10進度のままではなく、
+        以前Excelで使っていた「度.分っぽい表記」への変換です。
+    """
+    sign = -1.0 if dd < 0 else 1.0
+    x = abs(dd)
+    deg = int(x)
+    frac = x - deg
+    minutes = frac * 60.0
+    return sign * (deg + minutes / 100.0)
 class GPSData(Node):
     def __init__(self):
         super().__init__('gps_data_acquisition')
 
         self.declare_parameter('Position_magnification', 1.675) # 1.675
         self.declare_parameter('heading', 0.0)
-        self.declare_parameter('start_lat', 35.425952230280004) # tsukuba start point right 36.04974095972727, 140.04593633886364 , left 36.04976195993636, 140.04593755179093/nakaniwa 35.4257898377487,139.313807281254 /35.425952230280004, 139.31380123427
-        self.declare_parameter('start_lon', 139.31380123427)
+        self.declare_parameter('start_lat', 36.08289722) # tsukuba start point right 36.04974095972727, 140.04593633886364 , left 36.04976195993636, 140.04593755179093/nakaniwa 35.4257898377487,139.313807281254 /35.425952230280004, 139.31380123427
+        self.declare_parameter('start_lon', 140.07668056)
 
         self.Position_magnification = self.get_parameter('Position_magnification').get_parameter_value().double_value
         #self.theta = self.get_parameter('heading').get_parameter_value().double_value
         self.tsukuba_theta= self.get_parameter('heading').get_parameter_value().double_value # nakaniwa 180 tsukuba 93
 
         self.initial_coordinate = None
-        self.start_lat = self.get_parameter('start_lat').get_parameter_value().double_value
-        self.start_lon = self.get_parameter('start_lon').get_parameter_value().double_value
+        start_lat = self.get_parameter('start_lat').get_parameter_value().double_value
+        start_lon = self.get_parameter('start_lon').get_parameter_value().double_value
+        self.start_lat = excel_like_degmin(start_lat)
+        self.start_lon = excel_like_degmin(start_lon)
         self.start_GPS_coordinate = [self.start_lat, self.start_lon]
         self.fix_data = None
         self.count = 0

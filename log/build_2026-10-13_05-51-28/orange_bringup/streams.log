@@ -1,0 +1,44 @@
+[2.010s] Invoking command in '/home/ubuntu/my_work/orange2026B/orange_bringup': AMENT_PREFIX_PATH=/home/ubuntu/my_work/orange2026B/install/orange_description:/home/ubuntu/my_work/orange2026B/install/orange_sensor_tools:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/ubuntu/my_work/orange2026B/install/orange_description:/home/ubuntu/my_work/orange2026B/install/orange_sensor_tools:${CMAKE_PREFIX_PATH} PYTHONPATH=/home/ubuntu/my_work/orange2026B/build/orange_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/orange_bringup build --build-base /home/ubuntu/my_work/orange2026B/build/orange_bringup/build install --record /home/ubuntu/my_work/orange2026B/build/orange_bringup/install.log --single-version-externally-managed install_data
+[2.462s] running egg_info
+[2.462s] creating ../build/orange_bringup/orange_bringup.egg-info
+[2.463s] writing ../build/orange_bringup/orange_bringup.egg-info/PKG-INFO
+[2.463s] writing dependency_links to ../build/orange_bringup/orange_bringup.egg-info/dependency_links.txt
+[2.463s] writing entry points to ../build/orange_bringup/orange_bringup.egg-info/entry_points.txt
+[2.463s] writing requirements to ../build/orange_bringup/orange_bringup.egg-info/requires.txt
+[2.463s] writing top-level names to ../build/orange_bringup/orange_bringup.egg-info/top_level.txt
+[2.471s] writing manifest file '../build/orange_bringup/orange_bringup.egg-info/SOURCES.txt'
+[2.479s] reading manifest file '../build/orange_bringup/orange_bringup.egg-info/SOURCES.txt'
+[2.480s] writing manifest file '../build/orange_bringup/orange_bringup.egg-info/SOURCES.txt'
+[2.480s] running build
+[2.480s] running build_py
+[2.481s] creating /home/ubuntu/my_work/orange2026B/build/orange_bringup/build
+[2.481s] creating /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib
+[2.482s] creating /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup
+[2.482s] copying orange_bringup/__init__.py -> /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup
+[2.482s] copying orange_bringup/motor_driver_node.py -> /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup
+[2.483s] running install
+[2.483s] running install_lib
+[2.483s] creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup
+[2.484s] copying /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup/__init__.py -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup
+[2.484s] copying /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup/motor_driver_node.py -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup
+[2.486s] byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup/__init__.py to __init__.cpython-310.pyc
+[2.486s] byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup/motor_driver_node.py to motor_driver_node.cpython-310.pyc
+[2.492s] running install_data
+[2.492s] creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/ament_index
+[2.492s] creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/ament_index/resource_index
+[2.492s] creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/ament_index/resource_index/packages
+[2.492s] copying resource/orange_bringup -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/ament_index/resource_index/packages
+[2.493s] copying package.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup
+[2.494s] creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+[2.494s] copying launch/rviz2.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+[2.495s] copying launch/orange_robot.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+[2.497s] copying launch/with_ros2bag.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+[2.498s] copying launch/imu_data.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+[2.500s] creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/config
+[2.500s] copying config/motor_driver_params.yaml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/config
+[2.502s] running install_egg_info
+[2.506s] Copying ../build/orange_bringup/orange_bringup.egg-info to /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup-0.0.0-py3.10.egg-info
+[2.508s] running install_scripts
+[2.545s] Installing motor_driver_node script to /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/orange_bringup
+[2.545s] writing list of installed files to '/home/ubuntu/my_work/orange2026B/build/orange_bringup/install.log'
+[2.630s] Invoked command in '/home/ubuntu/my_work/orange2026B/orange_bringup' returned '0': AMENT_PREFIX_PATH=/home/ubuntu/my_work/orange2026B/install/orange_description:/home/ubuntu/my_work/orange2026B/install/orange_sensor_tools:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/ubuntu/my_work/orange2026B/install/orange_description:/home/ubuntu/my_work/orange2026B/install/orange_sensor_tools:${CMAKE_PREFIX_PATH} PYTHONPATH=/home/ubuntu/my_work/orange2026B/build/orange_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/orange_bringup build --build-base /home/ubuntu/my_work/orange2026B/build/orange_bringup/build install --record /home/ubuntu/my_work/orange2026B/build/orange_bringup/install.log --single-version-externally-managed install_data

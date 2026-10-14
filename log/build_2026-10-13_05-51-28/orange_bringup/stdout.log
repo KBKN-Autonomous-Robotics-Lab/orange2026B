@@ -1,0 +1,42 @@
+running egg_info
+creating ../build/orange_bringup/orange_bringup.egg-info
+writing ../build/orange_bringup/orange_bringup.egg-info/PKG-INFO
+writing dependency_links to ../build/orange_bringup/orange_bringup.egg-info/dependency_links.txt
+writing entry points to ../build/orange_bringup/orange_bringup.egg-info/entry_points.txt
+writing requirements to ../build/orange_bringup/orange_bringup.egg-info/requires.txt
+writing top-level names to ../build/orange_bringup/orange_bringup.egg-info/top_level.txt
+writing manifest file '../build/orange_bringup/orange_bringup.egg-info/SOURCES.txt'
+reading manifest file '../build/orange_bringup/orange_bringup.egg-info/SOURCES.txt'
+writing manifest file '../build/orange_bringup/orange_bringup.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ubuntu/my_work/orange2026B/build/orange_bringup/build
+creating /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib
+creating /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup
+copying orange_bringup/__init__.py -> /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup
+copying orange_bringup/motor_driver_node.py -> /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup
+running install
+running install_lib
+creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup
+copying /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup/__init__.py -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup
+copying /home/ubuntu/my_work/orange2026B/build/orange_bringup/build/lib/orange_bringup/motor_driver_node.py -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup/motor_driver_node.py to motor_driver_node.cpython-310.pyc
+running install_data
+creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/ament_index
+creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/ament_index/resource_index
+creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/ament_index/resource_index/packages
+copying resource/orange_bringup -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/ament_index/resource_index/packages
+copying package.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup
+creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+copying launch/rviz2.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+copying launch/orange_robot.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+copying launch/with_ros2bag.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+copying launch/imu_data.launch.xml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/launch
+creating /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/config
+copying config/motor_driver_params.yaml -> /home/ubuntu/my_work/orange2026B/install/orange_bringup/share/orange_bringup/config
+running install_egg_info
+Copying ../build/orange_bringup/orange_bringup.egg-info to /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/python3.10/site-packages/orange_bringup-0.0.0-py3.10.egg-info
+running install_scripts
+Installing motor_driver_node script to /home/ubuntu/my_work/orange2026B/install/orange_bringup/lib/orange_bringup
+writing list of installed files to '/home/ubuntu/my_work/orange2026B/build/orange_bringup/install.log'
