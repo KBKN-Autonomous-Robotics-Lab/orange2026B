@@ -1,0 +1,29 @@
+[3.605s] Invoking command in '/home/ubuntu/my_work/orange2026B/pcd_convert': PYTHONPATH=/home/ubuntu/my_work/orange2026B/build/pcd_convert/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/pcd_convert build --build-base /home/ubuntu/my_work/orange2026B/build/pcd_convert/build install --record /home/ubuntu/my_work/orange2026B/build/pcd_convert/install.log --single-version-externally-managed install_data
+[4.128s] running egg_info
+[4.130s] writing ../build/pcd_convert/pcd_convert.egg-info/PKG-INFO
+[4.133s] writing dependency_links to ../build/pcd_convert/pcd_convert.egg-info/dependency_links.txt
+[4.136s] writing entry points to ../build/pcd_convert/pcd_convert.egg-info/entry_points.txt
+[4.144s] writing requirements to ../build/pcd_convert/pcd_convert.egg-info/requires.txt
+[4.150s] writing top-level names to ../build/pcd_convert/pcd_convert.egg-info/top_level.txt
+[4.152s] reading manifest file '../build/pcd_convert/pcd_convert.egg-info/SOURCES.txt'
+[4.153s] adding license file 'LICENSE'
+[4.154s] writing manifest file '../build/pcd_convert/pcd_convert.egg-info/SOURCES.txt'
+[4.154s] running build
+[4.155s] running build_py
+[4.156s] copying pcd_convert/pcd_height_segmentation.py -> /home/ubuntu/my_work/orange2026B/build/pcd_convert/build/lib/pcd_convert
+[4.156s] running install
+[4.157s] running install_lib
+[4.157s] copying /home/ubuntu/my_work/orange2026B/build/pcd_convert/build/lib/pcd_convert/pcd_height_segmentation.py -> /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert
+[4.158s] byte-compiling /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert/pcd_height_segmentation.py to pcd_height_segmentation.cpython-310.pyc
+[4.158s] running install_data
+[4.159s] running install_egg_info
+[4.159s] removing '/home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert-0.0.0-py3.10.egg-info' (and everything under it)
+[4.160s] Copying ../build/pcd_convert/pcd_convert.egg-info to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages/pcd_convert-0.0.0-py3.10.egg-info
+[4.160s] running install_scripts
+[4.180s] Installing pcd_height_segmentation script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+[4.181s] Installing pcd_height_segmentation_lidar2 script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+[4.182s] Installing pcd_reflect_segmentation script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+[4.185s] Installing pcd_rotation script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+[4.187s] Installing pcd_rotation_lidar2 script to /home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/pcd_convert
+[4.190s] writing list of installed files to '/home/ubuntu/my_work/orange2026B/build/pcd_convert/install.log'
+[4.310s] Invoked command in '/home/ubuntu/my_work/orange2026B/pcd_convert' returned '0': PYTHONPATH=/home/ubuntu/my_work/orange2026B/build/pcd_convert/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/my_work/orange2026B/install/pcd_convert/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/pcd_convert build --build-base /home/ubuntu/my_work/orange2026B/build/pcd_convert/build install --record /home/ubuntu/my_work/orange2026B/build/pcd_convert/install.log --single-version-externally-managed install_data

@@ -29,7 +29,7 @@ def excel_like_degmin(dd: float) -> float:
     frac = x - deg
     minutes = frac * 60.0
     return sign * (deg + minutes / 100.0)
-    
+
     
 class GPSData(Node):
     def __init__(self):

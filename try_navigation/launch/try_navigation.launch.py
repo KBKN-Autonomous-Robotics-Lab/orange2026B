@@ -31,8 +31,7 @@ def generate_launch_description():
     
     waypoint_path = LaunchConfiguration('waypoint_path')
     declare_waypoint_arg = DeclareLaunchArgument(
-        'waypoint_path',
-        default_value='kbkn_maps/waypoints/tsukuba/2026/tsukuba_kakunin.yaml',
+        'waypoint_path',   
         description='waypoint name'
     )
     #kbkn_maps/waypoints/tsukuba/2025/papa/tsukuba_waypoint.yaml

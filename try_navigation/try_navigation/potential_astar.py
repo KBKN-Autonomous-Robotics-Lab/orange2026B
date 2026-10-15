@@ -75,7 +75,7 @@ class PotentialAStar(Node):
         #self.subscription = self.create_subscription(sensor_msgs.PointCloud2, '/map_obs', self.get_map_obs, qos_profile)
         #self.pothole_subscription = self.create_subscription(sensor_msgs.PointCloud2, '/pothole_points', self.get_pot_obs, qos_profile)
         #self.tire_subscription = self.create_subscription(sensor_msgs.PointCloud2, '/tire_points', self.get_tire_obs, qos_profile)
-        self.white_subscription = self.create_subscription(sensor_msgs.PointCloud2, '/white_buff', self.get_white_obs, qos_profile)
+        self.white_subscription = self.create_subscription(sensor_msgs.PointCloud2, '/white_lines', self.get_white_obs, qos_profile)
         self.right_subscription = self.create_subscription(sensor_msgs.PointCloud2, '/line_buff_right', self.get_right_obs, qos_profile)
         self.left_subscription = self.create_subscription(sensor_msgs.PointCloud2, '/line_buff_left', self.get_left_obs, qos_profile)
         self.dot_subscription = self.create_subscription(sensor_msgs.PointCloud2, '/dotted_line', self.get_dot_obs, qos_profile)
@@ -416,14 +416,16 @@ class PotentialAStar(Node):
                 tire_local = localization_xyz(self.tire_obs_points, position_x, position_y, theta_x, theta_y, theta_z)      
         
         #white_obs add(global)
+        # 21～23点目（waypoint_number 20～22）のみ白線を障害物として使用
         white_line_local = np.array([[],[],[]])
-        if len(self.white_obs_points[0,:])>0: 
-            if self.functions_test == 1:
-                if self.waypoint_number >= self.white_number: # front stop >= 1, lanechange == 0
-                    white_line_local = localization_xyz(self.white_obs_points, position_x, position_y, theta_x, theta_y, theta_z)
-            elif self.obs_info[self.waypoint_number][self.whiteline_info] == 1:
-                white_line_local = localization_xyz(self.white_obs_points, position_x, position_y, theta_x, theta_y, theta_z)
-        
+        if len(self.white_obs_points[0,:]) > 0:
+            if 20 <= self.waypoint_number <= 22:
+                white_line_local = localization_xyz(
+                    self.white_obs_points,
+                    position_x, position_y,
+                    theta_x, theta_y, theta_z
+                )
+
         #right_obs add(global)
         right_line_local = np.array([[],[],[]])
         if len(self.right_obs_points[0,:])>0:

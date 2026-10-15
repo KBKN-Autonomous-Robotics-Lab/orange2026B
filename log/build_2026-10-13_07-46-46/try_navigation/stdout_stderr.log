@@ -1,0 +1,38 @@
+running egg_info
+writing ../build/try_navigation/try_navigation.egg-info/PKG-INFO
+writing dependency_links to ../build/try_navigation/try_navigation.egg-info/dependency_links.txt
+writing entry points to ../build/try_navigation/try_navigation.egg-info/entry_points.txt
+writing requirements to ../build/try_navigation/try_navigation.egg-info/requires.txt
+writing top-level names to ../build/try_navigation/try_navigation.egg-info/top_level.txt
+reading manifest file '../build/try_navigation/try_navigation.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file '../build/try_navigation/try_navigation.egg-info/SOURCES.txt'
+running build
+running build_py
+copying try_navigation/potential_astar.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+running install
+running install_lib
+copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/potential_astar.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/potential_astar.py to potential_astar.cpython-310.pyc
+running install_data
+copying launch/try_navigation.launch.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/share/try_navigation/launch
+running install_egg_info
+removing '/home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../build/try_navigation/try_navigation.egg-info to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation-0.0.0-py3.10.egg-info
+running install_scripts
+Installing ekf_myself_gps script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing ekf_myself_match script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing ekf_myself_odom script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing map_check script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing marker_utils script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing odom_wheel script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing path_follower script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing pcd_buffer script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing potential_astar script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing reflection_intensity_map script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing reflection_to_pcd script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing reflection_to_pcd_dbscan script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing self_drive_line script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing waypoint_manager script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+Installing waypoint_manager_maprun script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+writing list of installed files to '/home/ubuntu/my_work/orange2026B/build/try_navigation/install.log'

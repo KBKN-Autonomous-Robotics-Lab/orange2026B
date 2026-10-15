@@ -1,0 +1,105 @@
+[1.633s] Invoking command in '/home/ubuntu/my_work/orange2026B/try_navigation': PYTHONPATH=/home/ubuntu/my_work/orange2026B/build/try_navigation/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/try_navigation build --build-base /home/ubuntu/my_work/orange2026B/build/try_navigation/build install --record /home/ubuntu/my_work/orange2026B/build/try_navigation/install.log --single-version-externally-managed install_data
+[2.173s] running egg_info
+[2.174s] creating ../build/try_navigation/try_navigation.egg-info
+[2.176s] writing ../build/try_navigation/try_navigation.egg-info/PKG-INFO
+[2.178s] writing dependency_links to ../build/try_navigation/try_navigation.egg-info/dependency_links.txt
+[2.179s] writing entry points to ../build/try_navigation/try_navigation.egg-info/entry_points.txt
+[2.179s] writing requirements to ../build/try_navigation/try_navigation.egg-info/requires.txt
+[2.179s] writing top-level names to ../build/try_navigation/try_navigation.egg-info/top_level.txt
+[2.197s] writing manifest file '../build/try_navigation/try_navigation.egg-info/SOURCES.txt'
+[2.202s] reading manifest file '../build/try_navigation/try_navigation.egg-info/SOURCES.txt'
+[2.203s] adding license file 'LICENSE'
+[2.204s] writing manifest file '../build/try_navigation/try_navigation.egg-info/SOURCES.txt'
+[2.204s] running build
+[2.205s] running build_py
+[2.205s] creating /home/ubuntu/my_work/orange2026B/build/try_navigation/build
+[2.206s] creating /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib
+[2.206s] creating /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.206s] copying try_navigation/ekf_myself_gps.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.206s] copying try_navigation/ekf_myself_match.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.207s] copying try_navigation/ekf_myself_match_dd.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.207s] copying try_navigation/ekf_myself_odom.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.207s] copying try_navigation/map_check.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.207s] copying try_navigation/pgm_to_jpeg.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.208s] copying try_navigation/waypoint_manager.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.208s] copying try_navigation/waypoint_manager_maprun.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.208s] copying try_navigation/pcd_buffer.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.209s] copying try_navigation/reflection_intensity_map.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.209s] copying try_navigation/__init__.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.209s] copying try_navigation/path_follower.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.209s] copying try_navigation/marker_utils.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.210s] copying try_navigation/reflection_to_pcd_dbscan.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.210s] copying try_navigation/potential_astar.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.210s] copying try_navigation/reflection_to_pcd.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.210s] copying try_navigation/self_drive_line.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.211s] copying try_navigation/odom_wheel.py -> /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation
+[2.212s] running install
+[2.212s] running install_lib
+[2.214s] creating /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.214s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/ekf_myself_gps.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.215s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/ekf_myself_match.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.215s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/ekf_myself_match_dd.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.215s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/ekf_myself_odom.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.215s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/map_check.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.216s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/pgm_to_jpeg.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.216s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/waypoint_manager.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.216s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/waypoint_manager_maprun.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.216s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/pcd_buffer.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.216s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/reflection_intensity_map.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.216s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/__init__.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.217s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/path_follower.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.217s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/marker_utils.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.217s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/reflection_to_pcd_dbscan.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.217s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/potential_astar.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.218s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/reflection_to_pcd.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.218s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/self_drive_line.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.218s] copying /home/ubuntu/my_work/orange2026B/build/try_navigation/build/lib/try_navigation/odom_wheel.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation
+[2.219s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/ekf_myself_gps.py to ekf_myself_gps.cpython-310.pyc
+[2.226s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/ekf_myself_match.py to ekf_myself_match.cpython-310.pyc
+[2.231s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/ekf_myself_match_dd.py to ekf_myself_match_dd.cpython-310.pyc
+[2.235s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/ekf_myself_odom.py to ekf_myself_odom.cpython-310.pyc
+[2.239s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/map_check.py to map_check.cpython-310.pyc
+[2.253s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/pgm_to_jpeg.py to pgm_to_jpeg.cpython-310.pyc
+[2.253s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/waypoint_manager.py to waypoint_manager.cpython-310.pyc
+[2.256s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/waypoint_manager_maprun.py to waypoint_manager_maprun.cpython-310.pyc
+[2.271s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/pcd_buffer.py to pcd_buffer.cpython-310.pyc
+[2.273s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/reflection_intensity_map.py to reflection_intensity_map.cpython-310.pyc
+[2.277s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/__init__.py to __init__.cpython-310.pyc
+[2.277s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/path_follower.py to path_follower.cpython-310.pyc
+[2.285s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/marker_utils.py to marker_utils.cpython-310.pyc
+[2.287s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/reflection_to_pcd_dbscan.py to reflection_to_pcd_dbscan.cpython-310.pyc
+[2.296s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/potential_astar.py to potential_astar.cpython-310.pyc
+[2.305s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/reflection_to_pcd.py to reflection_to_pcd.cpython-310.pyc
+[2.317s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/self_drive_line.py to self_drive_line.cpython-310.pyc
+[2.328s] byte-compiling /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation/odom_wheel.py to odom_wheel.cpython-310.pyc
+[2.330s] running install_data
+[2.331s] creating /home/ubuntu/my_work/orange2026B/install/try_navigation/share/ament_index
+[2.331s] creating /home/ubuntu/my_work/orange2026B/install/try_navigation/share/ament_index/resource_index
+[2.331s] creating /home/ubuntu/my_work/orange2026B/install/try_navigation/share/ament_index/resource_index/packages
+[2.331s] copying resource/try_navigation -> /home/ubuntu/my_work/orange2026B/install/try_navigation/share/ament_index/resource_index/packages
+[2.332s] copying package.xml -> /home/ubuntu/my_work/orange2026B/install/try_navigation/share/try_navigation
+[2.332s] copying ./launch/IGVC_navigation.launch.xml -> /home/ubuntu/my_work/orange2026B/install/try_navigation/share/try_navigation
+[2.332s] creating /home/ubuntu/my_work/orange2026B/install/try_navigation/share/try_navigation/launch
+[2.332s] copying launch/try_navigation.launch.py -> /home/ubuntu/my_work/orange2026B/install/try_navigation/share/try_navigation/launch
+[2.332s] creating /home/ubuntu/my_work/orange2026B/install/try_navigation/share/try_navigation/config
+[2.332s] copying config/config.rviz -> /home/ubuntu/my_work/orange2026B/install/try_navigation/share/try_navigation/config
+[2.333s] running install_egg_info
+[2.336s] Copying ../build/try_navigation/try_navigation.egg-info to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages/try_navigation-0.0.0-py3.10.egg-info
+[2.338s] running install_scripts
+[2.381s] Installing ekf_myself_gps script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.382s] Installing ekf_myself_match script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.382s] Installing ekf_myself_odom script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.382s] Installing map_check script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.382s] Installing marker_utils script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.382s] Installing odom_wheel script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.382s] Installing path_follower script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.382s] Installing pcd_buffer script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.383s] Installing potential_astar script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.383s] Installing reflection_intensity_map script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.383s] Installing reflection_to_pcd script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.383s] Installing reflection_to_pcd_dbscan script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.383s] Installing self_drive_line script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.383s] Installing waypoint_manager script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.383s] Installing waypoint_manager_maprun script to /home/ubuntu/my_work/orange2026B/install/try_navigation/lib/try_navigation
+[2.384s] writing list of installed files to '/home/ubuntu/my_work/orange2026B/build/try_navigation/install.log'
+[2.507s] Invoked command in '/home/ubuntu/my_work/orange2026B/try_navigation' returned '0': PYTHONPATH=/home/ubuntu/my_work/orange2026B/build/try_navigation/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/my_work/orange2026B/install/try_navigation/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/try_navigation build --build-base /home/ubuntu/my_work/orange2026B/build/try_navigation/build install --record /home/ubuntu/my_work/orange2026B/build/try_navigation/install.log --single-version-externally-managed install_data

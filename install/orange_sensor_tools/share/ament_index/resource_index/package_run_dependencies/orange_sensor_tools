@@ -1,0 +1,1 @@
+sensor_msgs;libpcl-all-dev;pcl_ros;std_msgs;nav_msgs;geometry_msgs;tf2;tf2_ros;tf2_geometry_msgs;laser_geometry;rclcpp;rclcpp_action;rclcpp_lifecycle;pointcloud_to_laserscan;robot_localization;serial;rosidl_default_runtime;linefit_ground_segmentation_ros

@@ -1,0 +1,50 @@
+[0.063s] Invoking command in '/home/ubuntu/my_work/orange2026B/build/orange_sensor_tools': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/my_work/orange2026B/install/pcd_convert:/home/ubuntu/my_work/orange2026B/install/orange_teleop:/home/ubuntu/my_work/orange2026B/install/orange_gnss:/home/ubuntu/my_work/orange2026B/install/orange_bringup:/home/ubuntu/my_work/orange2026B/install/try_navigation:/home/ubuntu/ros2_ws/install/navigation_control:/home/ubuntu/ros2_ws/install/orange_gnss:/home/ubuntu/ros2_ws/install/orange_bringup:/home/ubuntu/ros2_ws/install/try_navigation:/home/ubuntu/ros2_ws/install/pcd_convert:/home/ubuntu/ros2_ws/install/orange_teleop:/home/ubuntu/ros2_ws/install/myfile:/home/ubuntu/ros2_ws/install/IGVC2026:/opt/ros/humble /usr/bin/cmake --build /home/ubuntu/my_work/orange2026B/build/orange_sensor_tools -- -j15 -l15
+[0.979s] [35m[1mConsolidate compiler generated dependencies of target led_node[0m
+[0.979s] [35m[1mConsolidate compiler generated dependencies of target wheel_imu_odom[0m
+[0.980s] [35m[1mConsolidate compiler generated dependencies of target laserscan_multi_merger[0m
+[0.980s] [ 50%] Built target wheel_imu_odom
+[0.980s] [ 66%] Built target led_node
+[0.980s] [100%] Built target laserscan_multi_merger
+[1.414s] Invoked command in '/home/ubuntu/my_work/orange2026B/build/orange_sensor_tools' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/my_work/orange2026B/install/pcd_convert:/home/ubuntu/my_work/orange2026B/install/orange_teleop:/home/ubuntu/my_work/orange2026B/install/orange_gnss:/home/ubuntu/my_work/orange2026B/install/orange_bringup:/home/ubuntu/my_work/orange2026B/install/try_navigation:/home/ubuntu/ros2_ws/install/navigation_control:/home/ubuntu/ros2_ws/install/orange_gnss:/home/ubuntu/ros2_ws/install/orange_bringup:/home/ubuntu/ros2_ws/install/try_navigation:/home/ubuntu/ros2_ws/install/pcd_convert:/home/ubuntu/ros2_ws/install/orange_teleop:/home/ubuntu/ros2_ws/install/myfile:/home/ubuntu/ros2_ws/install/IGVC2026:/opt/ros/humble /usr/bin/cmake --build /home/ubuntu/my_work/orange2026B/build/orange_sensor_tools -- -j15 -l15
+[1.430s] Invoking command in '/home/ubuntu/my_work/orange2026B/build/orange_sensor_tools': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/my_work/orange2026B/install/pcd_convert:/home/ubuntu/my_work/orange2026B/install/orange_teleop:/home/ubuntu/my_work/orange2026B/install/orange_gnss:/home/ubuntu/my_work/orange2026B/install/orange_bringup:/home/ubuntu/my_work/orange2026B/install/try_navigation:/home/ubuntu/ros2_ws/install/navigation_control:/home/ubuntu/ros2_ws/install/orange_gnss:/home/ubuntu/ros2_ws/install/orange_bringup:/home/ubuntu/ros2_ws/install/try_navigation:/home/ubuntu/ros2_ws/install/pcd_convert:/home/ubuntu/ros2_ws/install/orange_teleop:/home/ubuntu/ros2_ws/install/myfile:/home/ubuntu/ros2_ws/install/IGVC2026:/opt/ros/humble /usr/bin/cmake --install /home/ubuntu/my_work/orange2026B/build/orange_sensor_tools
+[1.443s] -- Install configuration: ""
+[1.443s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/lib/orange_sensor_tools/laserscan_multi_merger
+[1.443s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/lib/orange_sensor_tools/led_node
+[1.444s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/lib/orange_sensor_tools/wheel_imu_odom
+[1.444s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//config
+[1.444s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//config/ekf_node.yaml
+[1.444s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//config/ground_segmentation.yaml
+[1.444s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//firmware
+[1.445s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//firmware/LED.ino
+[1.445s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//include
+[1.445s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//include/led_node.hpp
+[1.445s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//include/wheel_imu_odom.hpp
+[1.445s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//launch
+[1.445s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//launch/pointcloud_to_laserscan.launch.xml
+[1.445s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//launch/wheel_imu_odom.launch.xml
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//launch/ground_segmentation.launch.xml
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//launch/laserscan_multi_merger.launch.xml
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//launch/led_node.launch.xml
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//launch/livox_to_pointcloud2_laserscan.launch.py
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//launch/localization.launch.xml
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//src
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//src/wheel_imu_odom _backup.cpp
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//src/led_node.cpp
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//src/laserscan_multi_merger.cpp
+[1.446s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools//src/wheel_imu_odom.cpp
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/ament_index/resource_index/package_run_dependencies/orange_sensor_tools
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/ament_index/resource_index/parent_prefix_path/orange_sensor_tools
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/environment/ament_prefix_path.sh
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/environment/ament_prefix_path.dsv
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/environment/path.sh
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/environment/path.dsv
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/local_setup.bash
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/local_setup.sh
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/local_setup.zsh
+[1.447s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/local_setup.dsv
+[1.447s] -- Installing: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/package.dsv
+[1.448s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/ament_index/resource_index/packages/orange_sensor_tools
+[1.448s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/cmake/orange_sensor_toolsConfig.cmake
+[1.448s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/cmake/orange_sensor_toolsConfig-version.cmake
+[1.448s] -- Up-to-date: /home/ubuntu/my_work/orange2026B/install/orange_sensor_tools/share/orange_sensor_tools/package.xml
+[1.451s] Invoked command in '/home/ubuntu/my_work/orange2026B/build/orange_sensor_tools' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/my_work/orange2026B/install/pcd_convert:/home/ubuntu/my_work/orange2026B/install/orange_teleop:/home/ubuntu/my_work/orange2026B/install/orange_gnss:/home/ubuntu/my_work/orange2026B/install/orange_bringup:/home/ubuntu/my_work/orange2026B/install/try_navigation:/home/ubuntu/ros2_ws/install/navigation_control:/home/ubuntu/ros2_ws/install/orange_gnss:/home/ubuntu/ros2_ws/install/orange_bringup:/home/ubuntu/ros2_ws/install/try_navigation:/home/ubuntu/ros2_ws/install/pcd_convert:/home/ubuntu/ros2_ws/install/orange_teleop:/home/ubuntu/ros2_ws/install/myfile:/home/ubuntu/ros2_ws/install/IGVC2026:/opt/ros/humble /usr/bin/cmake --install /home/ubuntu/my_work/orange2026B/build/orange_sensor_tools
