@@ -37,18 +37,18 @@ class GPSData(Node):
 
         self.declare_parameter('Position_magnification', 1.675) # 1.675
         self.declare_parameter('heading', 0.0)
-        self.declare_parameter('start_lat', 36.08289722) # tsukuba start point right 36.04974095972727, 140.04593633886364 , left 36.04976195993636, 140.04593755179093/nakaniwa 35.4257898377487,139.313807281254 /35.425952230280004, 139.31380123427
-        self.declare_parameter('start_lon', 140.07668056)
+        self.declare_parameter('start_lat', 36.049743) # tsukuba start point right 36.04974095972727, 140.04593633886364 , left 36.04976195993636, 140.04593755179093/nakaniwa 35.4257898377487,139.313807281254 /35.425952230280004, 139.31380123427
+        self.declare_parameter('start_lon', 140.0461064)
 
         self.Position_magnification = self.get_parameter('Position_magnification').get_parameter_value().double_value
         #self.theta = self.get_parameter('heading').get_parameter_value().double_value
         self.tsukuba_theta= self.get_parameter('heading').get_parameter_value().double_value # nakaniwa 180 tsukuba 93
 
         self.initial_coordinate = None
-        start_lat = self.get_parameter('start_lat').get_parameter_value().double_value
-        start_lon = self.get_parameter('start_lon').get_parameter_value().double_value
-        self.start_lat = excel_like_degmin(start_lat)
-        self.start_lon = excel_like_degmin(start_lon)
+        self.start_lat = self.get_parameter('start_lat').get_parameter_value().double_value
+        self.start_lon = self.get_parameter('start_lon').get_parameter_value().double_value
+        #self.start_lat = excel_like_degmin(start_lat)
+        #self.start_lon = excel_like_degmin(start_lon)
         self.start_GPS_coordinate = [self.start_lat, self.start_lon]
         self.fix_data = None
         self.count = 0
