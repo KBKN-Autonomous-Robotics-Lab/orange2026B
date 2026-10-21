@@ -280,6 +280,13 @@ class PathFollower(Node):
         #set speed
         
         speed_set = 0.7#55 AutoNav 1.10
+        
+        if 20 <= self.waypoint_number <=25:
+            speed_set = 0.25
+         
+        elif 15 <= self.waypoint_number <=17:
+            speed_set = 0.5
+            
         speed = speed_set
 
         
@@ -445,7 +452,7 @@ class PathFollower(Node):
                     target_theta = (target_rad) * (180 / math.pi)
                     print("!!!LH!!!! Befor target_theta[deg]:",target_theta)
                     lh_obs_close = min(lh_obs[1,:]) # y0 lh min
-                    lh_dist = -0.65 # 0.65
+                    lh_dist = -0.55 # 0.65
                     cy = cf
                     cx = lh_obs_close + lh_dist
                     target_rad = math.atan2(cx, cf)
@@ -481,6 +488,10 @@ class PathFollower(Node):
         #else:
         #    speed = 0.2
         #self.get_logger().info('speed = %f' % (speed))
+        
+        if speed > 0.0:
+            speed = min(speed, speed_set)
+        
         target_theta = target_theta +90     ######/180*math.pi
         target_rad_pd = self.sensim0(target_rad)
         #target_rad_pd = target_rad
