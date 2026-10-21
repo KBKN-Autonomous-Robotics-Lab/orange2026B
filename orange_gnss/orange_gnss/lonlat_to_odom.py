@@ -6,18 +6,39 @@ import serial
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from sensor_msgs.msg import Imu, NavSatFix
-
+from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy, QoSReliabilityPolicy
 
 class lonlat_To_Odom(Node):
     def __init__(self):
         super().__init__('gps_data_acquisition')
 
         self.declare_parameter('Position_magnification', 1.675)
-        # self.declare_parameter('heading', 180)
+        self.declare_parameter('heading', 0.0)
+        self.declare_parameter('start_lat', 0.0) # tsukuba start point right 36.04974095972727, 140.04593633886364 , left 36.04976195993636, 140.04593755179093/nakaniwa 35.4257898377487,139.313807281254 /35.425952230280004, 139.31380123427
+        self.declare_parameter('start_lon', 0.0)
 
         self.Position_magnification = self.get_parameter(
             'Position_magnification').get_parameter_value().double_value
-        # self.theta = self.get_parameter('heading').get_parameter_value().double_value
+        self.theta = self.get_parameter('heading').get_parameter_value().double_value
+        self.start_lat = self.get_parameter('start_lat').get_parameter_value().double_value
+        self.start_lon = self.get_parameter('start_lon').get_parameter_value().double_value
+        self.start_GPS_coordinate = [self.start_lat, self.start_lon]
+
+        self.received_init_gps = False
+
+        init_gps_qos = QoSProfile(
+            history=QoSHistoryPolicy.KEEP_LAST,
+            reliability=QoSReliabilityPolicy.RELIABLE,
+            durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
+            depth=10
+        ) 
+
+        self.init_gps_sub = self.create_subscription(
+            NavSatFix,
+            '/init_gps',
+            self.init_gps_callback,
+            10
+        )
 
         self.movingase_sub = self.create_subscription(
             Imu, "movingbase/quat", self.movingbase_callback, 1)
@@ -35,12 +56,23 @@ class lonlat_To_Odom(Node):
         self.latitude = None
         self.longitude = None
         self.satelites = None
-        self.theta = None
+        #self.theta = None
 
         self.timer = self.create_timer(1.0 / 3.0, self.publish_lonlat_to_odom)
 
         self.get_logger().info("Start lonlat_to_odom node")
         self.get_logger().info("-------------------------")
+
+    def init_gps_callback(self, msg):
+        self.start_lat = msg.latitude
+        self.start_lon = msg.longitude
+        self.start_GPS_coordinate = [self.start_lat, self.start_lon]
+        self.received_init_gps = True
+
+        self.get_logger().info(
+            f"Received /init_gps: start_lat={self.start_lat}, start_lon={self.start_lon}"
+        )
+
 
     def fix_callback(self, data):
         self.latitude = data.latitude
@@ -49,7 +81,8 @@ class lonlat_To_Odom(Node):
 
     def movingbase_callback(self, msg):
         if self.count == 0:
-            self.theta = msg.orientation_covariance[0]
+            #self.theta = msg.orientation_covariance[0]
+            self.theta = 0.0 # 180.0?
             self.count = 1
 
     def conversion(self, coordinate, origin, theta):
@@ -111,19 +144,22 @@ class lonlat_To_Odom(Node):
         r_theta = theta * degree_to_radian
         h_x = math.cos(r_theta) * gps_x - math.sin(r_theta) * gps_y
         h_y = math.sin(r_theta) * gps_x + math.cos(r_theta) * gps_y
-        point = (-h_y, h_x)
-        # point = (h_y, -h_x)
+        #point = (-h_y, h_x)
+        point = (h_y, -h_x)
 
         return point
 
     def publish_lonlat_to_odom(self):
+        if not self.received_init_gps:
+            return
+            
         lonlat = [self.latitude, self.longitude]
         if lonlat[0] is not None and lonlat[1] is not None and self.theta is not None:
             if lonlat[0] != 0 and lonlat[1] != 0:
                 if self.initial_coordinate is None:
                     self.initial_coordinate = [lonlat[0], lonlat[1]]
                 GPSxy = self.conversion(
-                    lonlat, self.initial_coordinate, self.theta)
+                    lonlat, self.start_GPS_coordinate, self.theta)
                 # self.get_logger().info(f"GPSxy: {GPSxy}")
                 # self.get_logger().info(f"lonlat[4]: {lonlat[4]}")
 

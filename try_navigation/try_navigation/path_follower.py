@@ -55,6 +55,12 @@ class PathFollower(Node):
             depth = 1
         )
 
+        # set parameter (launch can change this parameter)
+        self.declare_parameter('odom', '/fusion/odom')
+        
+        # define parameter
+        odom_topic = self.get_parameter('odom').get_parameter_value().string_value
+
         # actionサーバーの生成(tuika)
         self.server = ActionServer(self,
             StopFlag, "stop_flag", self.listener_callback)
@@ -62,15 +68,13 @@ class PathFollower(Node):
         # Subscriptionを作成。
         self.subscription = self.create_subscription(nav_msgs.Path, '/potential_astar_path', self.get_path, qos_profile) #set subscribe pcd topic name
         #self.subscription = self.create_subscription(nav_msgs.Odometry,'/odom/wheel_imu', self.get_odom, qos_profile_sub) # /odom/wheel_spimu
-        self.subscription = self.create_subscription(nav_msgs.Odometry,'/fusion/odom', self.get_odom, qos_profile_sub)
+        self.subscription = self.create_subscription(nav_msgs.Odometry, odom_topic, self.get_odom, qos_profile_sub)
         #self.subscription = self.create_subscription(nav_msgs.Odometry,'/odom_ekf_match', self.get_odom, qos_profile_sub)
         #self.subscription = self.create_subscription(nav_msgs.Odometry,'/odom_ref_slam', self.get_odom_ref, qos_profile_sub)
-        self.subscription = self.create_subscription(nav_msgs.Odometry,'/fusion/odom', self.get_odom_ref, qos_profile_sub) #/fusion/odom
+        self.subscription = self.create_subscription(nav_msgs.Odometry, odom_topic, self.get_odom_ref, qos_profile_sub) #/fusion/odom
         self.subscription = self.create_subscription(sensor_msgs.PointCloud2, '/pcd_segment_obs', self.obs_steer, qos_profile)
         self.step_sub = self.create_subscription(sensor_msgs.PointCloud2, '/pcd_segment_low_step', self.low_obs_steer, qos_profile)
         self.goal_sub = self.create_subscription(PoseStamped, '/goal_pose', self.goal_pose_callback, qos_profile)
-        self.stop_sub = self.create_subscription(String, '/stop_sign_status', self.stop_sign_callback, 10)
-        self.human_sub = self.create_subscription(String, '/human_status', self.human_callback, 10)
         self.waypoint_number_sub = self.create_subscription(Int32,'/waypoint_number', self.get_waypoint_number, qos_profile_sub)
         self.subscription  # 警告を回避するために設置されているだけです。削除しても挙動はかわりません。
         
@@ -113,75 +117,43 @@ class PathFollower(Node):
         self.e_n1 = 0;
         self.k_p = 0.6;
         self.k_d = 0.3;
+
+        self.max_acc = 0.1
+        self.max_dec = 0.3
+        self.last_speed = 0.0
         
         self.stop_xy_test = [8, 10, -10, 10]
         self.stop_xy_test_flag = 1
         
-        self.stop_xy = np.array([ #xmin,xmax,ymin,ymax
-            #[  32,  37.1,    -7,     3, 1.0], #nakaniwa_1
-            #[  38.7,  49,    -10, 10], #nakaniwa_1129_last
-            #[ 44.2, 64.2, 27.7, 32.7, 1.0], #nakaniwa_2
-            #[  2.9,  7.9,  42.8,  62.8], #nakaniwa_3
-            
-            #[   4.8,   8.9,  53.1,  57.1], #nakaniwa_4
-            #[   8,   13, -10,  10], #test
-            #[  15,   19, -10,  10], #test
-            #[ -25,  -20, -30, -25], #shiyakusyo
-            #[-235, -225,  43,  47], #hodu1 temae 
-            #[-235, -225,  57,  61], #hodou1
-            #[-235, -225,  75,  79], #hodou2 temae
-            #[-235, -233,  70,  80], #hodou2
-            #[-256, -254,  70,  80], #hodou3 temae
-            #[-250, -248,  70,  80], #hodou3
-            #[-240, -230,  71,  73], #hodou4 temae
-            #[-240, -230,  68,  70], #hodou4
-            #[ -55,  -35,  40,  42], #Goal
-            
-            #xmin,      xmax,    ymin,   ymax, flag
-            #[-28.8,	-19.1,	-33.3,	-23.3, 1.0], #shiyakusyo ||| [-28.8,	-19.8,	-33.3,	-23.3, 1.0], before:[-28.8,	-23.8,	-33.3,	-23.3, 1.0], 
-            #[-64,	-54.8,	-47.5,	-27.5, 1.0], #tyokusen1  ||| [-64,	-56.5,	-47.5,	-27.5, 1.0]before:[-64,	-59,	-47.5,	-27.5, 1.0], 
-            #[-141.5,	-133.7,	-49,	-29,   1.0], #tyokusen2  ||| [-141.5,	-135.5,	-49,	-29,   1.0]before:[-141.5,	-136.5,	-49,	-29,   1.0],
-            #[-240,	-220,	51.2,	56.9,  1.0], #singou1 temae |||[-240,	-220,	51.9,	56.9,  1.0],
-            #[-240,	-220,	55.0,	61.5,  1.0], #singou1 ||| [-240,	-220,	55.0,	61.5,  1.0]
-            #[-240,	-220,	75.5,	82.3,  1.0], #singou2 temae ||| [-240,	-220,	76.5,	82.3,  1.0] before:[-240,	-220,	77.3,	82.3,  1.0], 
-            #[-235,	-232,	69,	89,    1.0], #singou2 |||[-235,	-233,	69,	89,    1.0]
-            #[-300,	-240,	110,	140,   1.0], #through park
-            #[-255.0,	-250,	66,	92,    1.0], #singou3 temae ||| [-253.0,	-250,	66,	92,    1.0] before:[-252.0,	-250,	69,	89,    1.0], 
-            #[-252.0,	-244,	66,	92,    1.0], #singou3       ||| [-250.0,	-244,	66,	92,    1.0]before:[-249.0,	-244,	69,	89,    1.0], 
-            #[-240,	-220,	72,	76,    1.0], #singou4 temae ||| [-240,	-220,	72,	74,    1.0]
-            #[-240,	-220,	68.4,	72.4,  1.0], #singou4 ||| [-240,	-220,	68.4,	70.4,  1.0]
-            #[-147.5,	-140,	-47.5,	-27.5, 1.0], #tyokusen3 ||| [-145.5,	-140,	-47.5,	-27.5, 1.0] before:[-145.0,	-140,	-47.5,	-27.5, 1.0],
-            #[-69.5,	-62,	-47.5,	-27.5, 1.0], #tyokusen4 ||| [-67.5,	-62,	-47.5,	-27.5, 1.0]before:[-67.0,	-62,	-47.5,	-27.5, 1.0], 
-            #[-55,	-35,	41,	46,    1.0], #Goal
-            
-            #[ 10.0,  11.5, -19.0,  39.0, 1.0], #nakaniwa_test normal
-            #[ 30.0,  31.5, -19.0,  39.0, 1.0], #nakaniwa_test normal
-            #[ 10.0,  11.5, -19.0,  39.0, 1.0], #nakaniwa_test normal
-            #[ 0.0,  1.5,  30.0,  65.0, 1.0], #nakaniwa_test omawari 
-            #[ 10.0,  11.5, -19.0,  39.0, 1.0], #nakaniwa_test
-            #[ 30.0,  31.5, -19.0,  39.0, 1.0], #nakaniwa_test
-            #[ 0.0,  1.5,  30.0,  65.0, 1.0], #nakaniwa_test
-            #[ 10.0,  11.5, -19.0,  39.0, 1.0], #nakaniwa_test
-            #[ 30.0,  31.5, -19.0,  39.0, 1.0], #nakaniwa_test
-            #[ 0.0,  1.5,  30.0,  65.0, 1.0], #nakaniwa_test
-            [ 64.2,  65.2,  19.0,  39.0, 1.0], #shiyakusyo
-            [100.0, 101.0,  25.0,  45.0, 1.0], #dourotan1
-            [177.7, 178.7,  25.0,  45.0, 1.0], #dourotan2
-            [257.5, 277.5, -60.0, -59.0, 1.0], #singoumaeteisisen1
-            [257.5, 277.5, -66.5, -65.5, 1.0], #singoumae1
-            [256.5, 276.5, -86.2, -85.2, 1.0], #singoumaeteisisen2
-            [270.3, 271.3, -99.0, -79.5, 1.0], #singoumae2
-            [405.0, 425.0, -80.2, -79.2, 1.0], #ekimae oudanhodou1 y-1
-            [545.0, 568.0, -85.0, -60.0, 0.0], #ekimae not stop
-            [410.0, 417.0, -71.5, -70.5, 1.0], #ekimae oudanhodou2 y-2
-            [290.6, 291.6, -98.0, -78.0, 1.0], #singoumaeteisisen3
-            [284.3, 285.3, -98.0, -78.0, 1.0], #singoumae3
-            [259.5, 279.5, -83.7, -82.7, 1.0], #singoumaeteisisen4 12
-            [259.5, 279.5, -80.3, -79.3, 1.0], #singoumae4 13
-            [185.0, 186.0,  25.0,  45.0, 1.0], #dourotan3
-            [107.5, 108.5,  25.0,  45.0, 1.0], #dourotan4
-            [ 64.0, 104.0, -30.0, -25.0, 1.0], #GOAL!!!!
-            [  999,   999,   999,   999, 0.0] ]) #
+        self.stop_xy = np.array([
+        
+        # xmin, xmax, ymin, ymax, stop_flag, signal_flag
+        # X: 北が正
+        # Y: 西が正
+        # 中庭テスト用
+    
+        #[-5.00, 5.00, 20.00, 21.00, 1.0, 0.0],#test
+        [ 46.20,  76.20,  -19.30,  -17.30, 1.0, 0.0], # 0  道路端1
+        [ 48.90,  78.90,  -49.30,  -47.30, 1.0, 0.0], # 1  道路端2
+        [ 50.70,  54.70, -135.00, -134.60, 1.0, 0.0], # 2  道路端3
+        [ 48.90,  52.90, -158.40, -158.00, 1.0, 0.0], # 3  道路端4
+        [109.60, 110.00, -256.90, -252.90, 1.0, 0.0], # 4  道路端5
+        [186.40, 186.80, -263.90, -259.90, 1.0, 0.0], # 5  信号前停止線1
+        [190.10, 194.10, -261.80, -261.40, 1.0, 0.0], # 6  信号前1
+        [131.70, 132.10, -466.00, -462.00, 1.0, 0.0], # 7  道路端6
+        [120.00, 120.40, -465.70, -461.70, 1.0, 0.0], # 8  道路端7
+        [197.49, 201.49, -294.16, -293.76, 1.0, 0.0], # 9  信号前停止線2
+        [190.30, 194.30, -280.30, -279.90, 1.0, 0.0], # 10 信号前2
+        [119.10, 119.50, -258.20, -254.20, 1.0, 0.0], # 11 道路端8
+        [ 46.90,  50.90, -166.20, -165.80, 1.0, 0.0], # 12 道路端9
+        [ 49.20,  53.20, -142.60, -142.20, 1.0, 0.0], # 13 道路端10
+        [ 60.90,  64.90,  -59.40,  -59.00, 1.0, 0.0], # 14 道路端11
+        [ 67.70,  71.70,  -26.50,  -26.10, 1.0, 0.0], # 15 道路端12
+        [ -0.20,   3.80,  -33.30,  -32.90, 1.0, 0.0], # 16 GOAL
+
+        [999, 999, 999, 999, 0.0, 0.0]
+    ])
+
         self.stop_num = 0;
         
         #obs
@@ -201,49 +173,17 @@ class PathFollower(Node):
         self.jam_active = False
         self.jam_last_print = -1
         self.c_jam_obs = 0
-        
-        
-        
-        ################# IGVC SelfDrive Quolification line stop test #20250530# #################
-        self.sd_quolification_line_stop = 0 #root flag
-        #self.sd_c_obs_stop_dist = 0.305*3 + 0.0254*2 + 0.4 + 0.37# 3feat + 2inch +top +delay
-        self.sd_c_obs_stop_dist = 0.305*2 + 0.0254*2 + 0.4 + 0.37# 2feat + 2inch +top +delay
-        self.sd_c_obs_slow_dist = self.sd_c_obs_stop_dist + 1 #slow before 1m
-        ##########################################################################################   
-        
-        ################# IGVC SelfDrive III.1 function test #20250531# #################
-        self.sd_line_stop_set = 0 #root flag
-        self.time_restart = 0
-        self.time_restart_count = 50 #n/Hz = s
-        self.stop_flag_first_check = 0
-        self.sd_line_stop_set_flag = 0
-        #################################################################################
-            
-        ################# IGVC SelfDrive V.2 function test #20250601# #################
-        self.sd_human_stop = 0 #root flag
-        self.sd_human_stop_dist = 0.305*6 + 0.0254*2 + 0.4 + 0.87# 6feat + 2inch +top +delay
-        self.sd_c_obs_stop_dist_buff = self.sd_c_obs_stop_dist
-        if self.sd_human_stop == 1:
-            self.sd_c_obs_stop_dist = self.sd_human_stop_dist 
-        #################################################################################
-        
-        ################# IGVC SelfDrive Full #20250601# #################
-        self.sd_full_flag = 0 #root flag
         self.waypoint_number = 0
-        self.sd_full_human_stop = 0  #sub flag
-        if self.sd_full_human_stop == 1:
-            self.sd_c_obs_stop_dist = self.sd_human_stop_dist
-        self.sd_full_sign_stop = 0 #sub flag
-        if self.sd_full_sign_stop == 1:
-            dist = 0.5 + 0.4 + 0.5# eria +top +delay
-            sd_full_stop_xy = [-32.37441428909107, -16.465277566213718, 0.0]
-            self.stop_xy = np.array([
-                #xmin,      xmax,    ymin,   ymax, flag
-                [ sd_full_stop_xy[0]-dist,    sd_full_stop_xy[0]+dist -0.73,     sd_full_stop_xy[1]-2*dist,    sd_full_stop_xy[1]+2*dist, 1.0], #stop point set
-                [ 999,  999, 999, 999, 0.0] ]) #end
-        self.previous_status = None    
-        self.human_status = None    
-        ##################################################################
+
+        # roadside
+        self.roadside_detected = False
+        self.boundary_distance = 0.0
+        self.boundary_angle = 0.0
+        self.safe_dist = 0.20
+        self.recover_dist = 0.55
+
+        # stop line
+        self.stop_line = None
 
     # actionリクエストの受信時に呼ばれる(tuika)
     def listener_callback(self, goal_handle):
@@ -290,42 +230,19 @@ class PathFollower(Node):
         
         xyz = np.vstack((x,y,z))
         
-        
-        ################# IGVC SelfDrive III.1 function test #20250531# #################
-        if self.sd_line_stop_set == 1 :
-            dist = 0.305 + 0.4 #+ 0.5# feat +top +delay
-            self.stop_xy = np.array([ 
-                #xmin,      xmax,    ymin,   ymax, flag
-                [ x-dist,    x+1.5,     y-1.5,    y+1.5, 1.0], #stop point set
-                [ 999,  999, 999, 999, 0.0] ]) #end
-            self.sd_line_stop_set = 0;
-            self.stop_num = 0;
-            self.time_restart = 1
-            self.sd_line_stop_set_flag = 1
-            self.get_logger().info(f"self.stop_xy: {self.stop_xy}") 
-                  
-        #################################################################################
-        
         self.get_logger().info(f"Received goal: x={x:.3f}, y={y:.3f}")    
-        #self.get_logger().info(f"self.waypoints_array:{self.waypoints_array}")    
-        #self.get_logger().info(f"xyz_range:{xyz_range}")
     
-    # stop_sign_status トピックのコールバック
-    def stop_sign_callback(self, msg):
-        # 現在の状態が "Stop" になったら stop_flag を True にする
-        self.previous_status = msg.data   
-    
-    # human_status トピックのコールバック
-    def human_callback(self, msg):
-        # 現在の状態が "Stop" になったら stop_flag を True にする
-        self.human_status = msg.data       
    
     def get_waypoint_number(self, msg):
         #get waypoint number
         self.waypoint_number = msg.data
+
+    
+    def stopline_callback(self, msg):
+        self.stop_line = msg.data
         
     def robot_ctrl(self):
-        #self.get_logger().info('0.05秒ごとに車両制御を実行')
+        self.get_logger().info('0.05秒ごとに車両制御を実行')
         
         path = self.path_plan;
         position_x=self.position_x; position_y=self.position_y; 
@@ -357,20 +274,21 @@ class PathFollower(Node):
             #relative_point_rot, t_point_rot_matrix = rotation_xyz(relative_point, theta_x, theta_y, -reverse_theta_z)
             target_rad = math.atan2(relative_point_rot[1], relative_point_rot[0])
             target_theta = (target_rad) * (180 / math.pi)
-            
         ##################################################################
         
         
         #set speed
         
-        speed_set = 0.75#55 AutoNav 1.10
-        speed = speed_set
+        speed_set = 0.7#55 AutoNav 1.10
         
-        ################# IGVC SelfDrive Full #20250601# #################
-        if self.sd_full_flag == 1 :
-            if self.waypoint_number == 18:
-                speed = speed_set#0.35
-        ##################################################################
+        if 20 <= self.waypoint_number <=25:
+            speed_set = 0.25
+         
+        elif 15 <= self.waypoint_number <=17:
+            speed_set = 0.5
+            
+        speed = speed_set
+
         
         #points = self.obs_points
         points = np.concatenate([self.obs_points, self.low_step_obs_points], axis=1)
@@ -444,11 +362,7 @@ class PathFollower(Node):
         c_jam_obs = self.c_jam_obs
         #c_obs_near = ( -50<obs_theta) * (obs_theta<  50) * (obs_dist<0.5)
         #c_obs_back = ( -50<obs_theta) * (obs_theta<  50) * (obs_dist<0.4)
-        cf = 1.15
-        
-        #self.get_logger().info(f"self.waypoint_number: {self.waypoint_number}")
-        #print(theta_z)
-        
+        cf = 1.15        
 
         #-----------------------jam process-----------------
         now = self.get_clock().now()
@@ -531,14 +445,14 @@ class PathFollower(Node):
             elif np.any(lh_obs) and ~np.any(rh_obs):  #左寄り 11 <= self.waypoint_number <= 12 \ 
                 speed = 0.25
                 if (
-                    (65 <= self.waypoint_number <= 72 and -90 - self.angle_diff <= theta_z <= -90 + self.angle_diff)
+                    (15 <= self.waypoint_number <= 17 and (-120 <= theta_z <= -60))
                     or (162 <= self.waypoint_number <= 168 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
                     or (172 <= self.waypoint_number <= 175 and ((-150 - self.angle_diff <= theta_z <= -150) or (150  <= theta_z <= 150 + self.angle_diff)))
                     ):    #2 4
                     target_theta = (target_rad) * (180 / math.pi)
                     print("!!!LH!!!! Befor target_theta[deg]:",target_theta)
                     lh_obs_close = min(lh_obs[1,:]) # y0 lh min
-                    lh_dist = -0.65 # 0.65
+                    lh_dist = -0.55 # 0.65
                     cy = cf
                     cx = lh_obs_close + lh_dist
                     target_rad = math.atan2(cx, cf)
@@ -567,131 +481,21 @@ class PathFollower(Node):
         if abs(target_theta)  > 90:
             speed = -0.10
         if np.any(c_obs_back) :
-            speed = 0.10
-
-        
-        ################# IGVC SelfDrive Full #20250601# #################
-        if self.sd_full_flag == 1:
-            
-            ################# IGVC SelfDrive full sign stop #20250601# ################
-            ###### stop1 #######
-            if self.sd_full_sign_stop == 1: #flow 1-1
-                if self.waypoint_number == 6:
-                    self.time_restart = 1
-                    self.sd_full_sign_stop = 2
-            if self.sd_full_sign_stop == 2: #flow 1-2
-                #if self.previous_status == "Stop":
-                #    self.time_restart = 0
-                #    self.sd_full_sign_stop = 0
-                #    self.stop_flag_first_check = 0
-                if self.stop_flag == 0:
-                    self.stop_flag_first_check = 1
-                if self.time_restart == 1 and self.stop_flag == 1:
-                    if self.stop_flag_first_check == 1:
-                        self.time_restart_count -= 1
-                    if self.time_restart_count < 0:
-                        self.time_restart = 0
-                        self.stop_flag = 0
-                if self.waypoint_number == 9: # fail safe
-                    self.time_restart = 0
-                    self.stop_flag_first_check = 0
-                    self.sd_full_sign_stop = 3
-            
-            ###### stop2 #######
-            if self.sd_full_sign_stop == 3: #flow 2-1
-                if self.waypoint_number == 18:
-                    self.time_restart = 1
-                    self.time_restart_count = 50
-                    self.sd_full_sign_stop = 4
-            if self.sd_full_sign_stop == 4: #flow 2-2
-                if self.previous_status == "Stop":
-                    self.stop_flag = 1
-                    self.stop_flag_first_check = 1
-                    self.sd_full_sign_stop = 5
-            if self.sd_full_sign_stop == 5: #flow 2-3
-                if self.time_restart == 1 and self.stop_flag == 1:
-                    if self.stop_flag_first_check == 1: # kono if hontoha iranai yo
-                        self.time_restart_count -= 1
-                    if self.time_restart_count < 0:
-                        self.time_restart = 0
-                        self.stop_flag = 0
-                if self.waypoint_number == 20: # fail safe
-                    self.time_restart = 0
-                    self.stop_flag_first_check = 0
-                    self.sd_full_sign_stop = 0
-            ###################
-            
-            ###########################################################################
-
-            ################# IGVC SelfDrive full human stop #20250601# ###############
-            if self.sd_full_human_stop == 1:
-                if self.waypoint_number == 9:
-                    self.sd_quolification_line_stop = 1
-                    self.sd_human_stop = 1
-                    self.sd_full_human_stop = 2
-            if self.sd_full_human_stop == 2: #fail safe
-                if self.human_status == "Stop":
-                    self.time_restart = 1
-                    self.time_restart_count = 10
-                    self.sd_full_human_stop = 3
-            if self.sd_full_human_stop == 3: #flow3
-                if self.time_restart == 1 and self.stop_flag == 1:
-                    if self.human_status == "Go":
-                        self.time_restart_count -= 1
-                    if self.time_restart_count < 0:
-                        self.time_restart = 0
-                        self.stop_flag = 0
-                if self.waypoint_number == 12:
-                   self.sd_quolification_line_stop = 0
-                   self.sd_human_stop = 0
-                   self.sd_full_human_stop = 0
-            ###########################################################################
-            
-        ##################################################################
-        
-        
-        ################# IGVC SelfDrive Quolification line stop test #20250530# #################
-        if self.sd_quolification_line_stop == 1:
-            #self.stop_flag = 0
-            sd_c_obs_stop = ( -30<obs_theta) * (obs_theta<  30) * (obs_dist< self.sd_c_obs_stop_dist)
-            sd_c_obs_slow = ( -60<obs_theta) * (obs_theta<  60) * (obs_dist< self.sd_c_obs_slow_dist)
-            if np.any(sd_c_obs_stop):
-                speed = 0.0
-                self.stop_flag = 1
-                
-                ################# IGVC SelfDrive V.2 function test #20250601# ###############
-                if self.sd_human_stop == 1:
-                    self.sd_c_obs_stop_dist = self.sd_c_obs_stop_dist_buff
-                #############################################################################
-                
-            elif np.any(sd_c_obs_slow):
-                speed = 0.4
-        ##########################################################################################
-        
-        
-        ################# IGVC SelfDrive III.1 function test #20250531# ###############
-        if self.sd_line_stop_set_flag == 1:
-            if self.stop_flag == 0:
-                self.stop_flag_first_check = 1
-            if self.time_restart == 1 and self.stop_flag == 1:
-                if self.stop_flag_first_check == 1:
-                    self.time_restart_count -= 1
-                if self.time_restart_count < 0:
-                    self.time_restart = 0
-                    self.stop_flag = 0
-        #################################################################################
-        
-        
+            speed = 0.10     
         
         #elif abs(target_theta)  > 90:
         #    speed = 0.2
         #else:
         #    speed = 0.2
         #self.get_logger().info('speed = %f' % (speed))
+        
+        if speed > 0.0:
+            speed = min(speed, speed_set)
+        
         target_theta = target_theta +90     ######/180*math.pi
         target_rad_pd = self.sensim0(target_rad)
         #target_rad_pd = target_rad
-        
+
         #make msg
         twist_msg = geometry_msgs.Twist()
         #check stop flag
@@ -763,35 +567,45 @@ class PathFollower(Node):
         self.ref_theta_y = 0 #pitch /math.pi*180
         self.ref_theta_z = yaw /math.pi*180
         
-        if self.waypoint_number >= 225: # after dourotan4
-            if self.stop_num <= 15:
-                self.stop_num = 16
-        elif self.waypoint_number >= 198: # after singou
-            if self.stop_num <= 13:
-                self.stop_num = 14
-        elif self.waypoint_number >= 178: # after ekimae oudanhodou2
-            if self.stop_num <= 9:
-                self.stop_num = 10
-        elif self.waypoint_number >= 138: # after ekimae oudanhodou1
-            if self.stop_num <= 7:
-                self.stop_num = 8
-        elif self.waypoint_number >= 81: # after singou
-            if self.stop_num <= 6:
-                self.stop_num = 7
-        elif self.waypoint_number >= 57: # after dourotan2
-            if self.stop_num <= 2:
-                self.stop_num = 3
+        # 2025年版のwaypoint_numberによるスキップ処理
+        # 2026年のウェイポイント番号が確定するまで無効化
+
+        # if self.waypoint_number >= 225: # after dourotan4
+        #     if self.stop_num <= 15:
+        #         self.stop_num = 16
+        # elif self.waypoint_number >= 198: # after singou
+        #     if self.stop_num <= 13:
+        #         self.stop_num = 14
+        # elif self.waypoint_number >= 178: # after ekimae oudanhodou2
+        #     if self.stop_num <= 9:
+        #         self.stop_num = 10
+        # elif self.waypoint_number >= 138: # after ekimae oudanhodou1
+        #     if self.stop_num <= 7:
+        #         self.stop_num = 8
+        # elif self.waypoint_number >= 81: # after singou
+        #     if self.stop_num <= 6:
+        #         self.stop_num = 7
+        # elif self.waypoint_number >= 57: # after dourotan2
+        #     if self.stop_num <= 2:
+        #         self.stop_num = 3
         
+        # odometry stop point set
         if ((self.stop_xy[self.stop_num,0] < self.ref_position_x) and (self.ref_position_x < self.stop_xy[self.stop_num,1]) and (self.stop_xy[self.stop_num,2] < self.ref_position_y) and (self.ref_position_y < self.stop_xy[self.stop_num,3]) ) or ((self.stop_xy[self.stop_num,0] < self.position_x) and (self.position_x < self.stop_xy[self.stop_num,1]) and (self.stop_xy[self.stop_num,2] < self.position_y) and (self.position_y < self.stop_xy[self.stop_num,3]) ):
-            if self.stop_xy[self.stop_num,4] > 0:
-                self.get_logger().info('####### stop flag on %f #######' % (self.stop_num))
-                self.stop_flag = 1;
-                navigation_status = "STOP"
-                #print(self.stop_num)
+            if self.stop_xy[self.stop_num,5] == 0:
+                if self.stop_xy[self.stop_num,4] > 0:
+                    self.get_logger().info('####### stop flag on %f #######' % (self.stop_num))
+                    self.stop_flag = 1;
+                    navigation_status = "STOP"
+                    #print(self.stop_num)
+                else:
+                    self.get_logger().info('####### through flag on %f #######' % (self.stop_num))
+                self.stop_num = self.stop_num + 1;     
             else:
-                self.get_logger().info('####### through flag on %f #######' % (self.stop_num))
-            self.stop_num = self.stop_num + 1;
-        
+                if self.stop_line:
+                    self.stop_flag = 1;
+                    navigation_status = "STOP"
+                    self.stop_num = self.stop_num + 1;     
+
     def pointcloud2_to_array(self, cloud_msg):
         # Extract point cloud data
         points = np.frombuffer(cloud_msg.data, dtype=np.uint8).reshape(-1, cloud_msg.point_step)
@@ -838,14 +652,6 @@ class PathFollower(Node):
         self.lh_obs = lh_obs
         self.ch_obs = ch_obs
         self.c_jam_obs = c_jam_obs
-        
-        #print(lh_obs.shape)
-        #print("x0 min",min(lh_obs[0,:]))
-        #print("x0 max",max(lh_obs[0,:]))
-        #print("y0 min",min(lh_obs[1,:])) ###ok!!!!!!!!!
-        #print("y0 max",max(lh_obs[1,:]))
-        
-        #print("y0 rh min",max(rh_obs[1,:]))
         
         #global test obs rviz2 kesu
         obs_jam_msg = point_cloud_intensity_msg(c_jam_obs.T, t_stamp, 'odom')

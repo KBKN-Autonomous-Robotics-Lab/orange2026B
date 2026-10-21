@@ -188,7 +188,7 @@ class PotentialAStar(Node):
         #tukuba_obs_y =np.linspace(97,94,860);
         #tukuba_obs_z =np.linspace(0,0,860);
         #self.tsukuba_obs = np.array([tukuba_obs_x, tukuba_obs_y, tukuba_obs_z]);
-        self.tsukuba_obs = np.array([[],[],[]])
+        #self.tsukuba_obs = np.array([[],[],[]])
         self.low_step_obs_points = np.array([[],[],[]])
         self.shibafu_obs_points = np.array([[],[],[]])
         
@@ -519,17 +519,17 @@ class PotentialAStar(Node):
         obs15 = make_obs(270.96,270.52,-57.33, -61.25) # singou
         obs16 = make_obs(269.96,273.12,-57.33, -57.05) # singou
 
-        self.tsukuba_obs = np.hstack((obs1, obs4, obs5, obs6, obs7, obs8, obs9, obs10, obs11, obs12, obs13, obs14, obs15, obs16))
+        #self.tsukuba_obs = np.hstack((obs1, obs4, obs5, obs6, obs7, obs8, obs9, obs10, obs11, obs12, obs13, obs14, obs15, obs16))
         #self.tsukuba_obs = np.hstack((obs7,obs1))
         
         #map_obs add
-        if len(self.tsukuba_obs[0,:])>0:
-            relative_point_x = self.tsukuba_obs[0,:] - self.position_x
-            relative_point_y = self.tsukuba_obs[1,:] - self.position_y
-            relative_point = np.array((relative_point_x, relative_point_y, self.tsukuba_obs[2,:]))
-            relative_point_rot, t_point_rot_matrix = rotation_xyz(relative_point, self.theta_x, self.theta_y, -self.theta_z)
-        else:
-            relative_point_rot = np.array([[],[],[]])
+        #if len(self.tsukuba_obs[0,:])>0:
+        #   relative_point_x = self.tsukuba_obs[0,:] - self.position_x
+        #  relative_point_y = self.tsukuba_obs[1,:] - self.position_y
+        # relative_point = np.array((relative_point_x, relative_point_y, self.tsukuba_obs[2,:]))
+        #    relative_point_rot, t_point_rot_matrix = rotation_xyz(relative_point, self.theta_x, self.theta_y, -self.theta_z)
+        #else:
+          #  relative_point_rot = np.array([[],[],[]])
         
         ###################################
                 
@@ -571,7 +571,7 @@ class PotentialAStar(Node):
             obs_points = np.insert(obs_points, len(obs_points[0,:]), shibafu_local.T, axis=1)
             print("!!!!!!!!Add Shibafu!!!!!!!!")
         
-        obs_points = np.insert(obs_points, len(obs_points[0,:]), relative_point_rot.T, axis=1)
+        #obs_points = np.insert(obs_points, len(obs_points[0,:]), relative_point_rot.T, axis=1)
         obs_points = np.insert(obs_points, len(obs_points[0,:]), self_radius_points.T, axis=1)
         #obs_points = np.insert(obs_points, len(obs_points[0,:]), self.tsukuba_obs.T, axis=1)
         points_round = np.round(obs_points * self.obs_pixel) / self.obs_pixel
