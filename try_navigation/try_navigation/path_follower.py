@@ -441,6 +441,21 @@ class PathFollower(Node):
                     target_rad = math.atan2(cx, cf)
                     target_theta = (target_rad) * (180 / math.pi)
                     print("!!!RH!!!! After target_theta[deg]:",target_theta)
+
+            elif np.any(lh_obs) and (16 <= self.waypoint_number <= 18 and (-120 <= theta_z <= -60)):
+                speed = 0.25
+                target_theta = (target_rad) * (180 / math.pi)
+                print("!!!LH!!!! Befor target_theta[deg]:",target_theta)
+                lh_obs_close = min(lh_obs[1,:]) # y0 lh min
+                lh_dist = -0.65 # 0.65
+                if self.waypoint_number==55:
+                    lh_dist = -0.45 # 0.65
+                cy = cf
+                cx = lh_obs_close + lh_dist
+                target_rad = math.atan2(cx, cf)
+                self.publish_wall_target(cf, cx, 'lh')
+                target_theta = (target_rad) * (180 / math.pi)
+                print("!!!LH!!!! After target_theta[deg]:",target_theta)
                     
             elif np.any(lh_obs) and ~np.any(rh_obs):  #左寄り 11 <= self.waypoint_number <= 12 \ 
                 speed = 0.25
