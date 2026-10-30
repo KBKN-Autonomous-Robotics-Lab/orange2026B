@@ -503,8 +503,8 @@ class PotentialAStar(Node):
         
         # make map_obs   x1  x2  y1  y2
         obs1 = make_obs(98.6, 98.6, 65, 86) # siyakusyoura minami
-        obs2 = make_obs(102, 104, 30, 68) # siyakusyoura kita
-        obs3 = make_obs(103, 120, 67.2, 67.2) # siyakusyoura kita2
+        obs2 = make_obs(103, 105, 30, 68) # siyakusyoura kita
+        obs3 = make_obs(105, 120, 67.2, 67.2) # siyakusyoura kita2
         obs4 = make_obs(0, 120, 100, 100) # siyakusyo nisi
         """
         obs5 = make_obs( 61,100, 33.5, 42.5) # siyakusyo oudanhodou
