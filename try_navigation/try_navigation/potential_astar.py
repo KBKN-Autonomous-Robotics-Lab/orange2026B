@@ -520,9 +520,9 @@ class PotentialAStar(Node):
         obs15 = make_obs(270.96,270.52,-57.33, -61.25) # singou
         obs16 = make_obs(269.96,273.12,-57.33, -57.05) # singou
         """
-        #self.tsukuba_obs = np.hstack((obs1, obs2, obs3, obs4))
+        self.tsukuba_obs = np.hstack((obs1, obs2, obs3, obs4))
         #self.tsukuba_obs = np.hstack((obs7,obs1))
-        self.tsukuba_obs = np.hstack((obs6, obs7, obs8))
+        #self.tsukuba_obs = np.hstack((obs6, obs7, obs8))
         #map_obs add
         if len(self.tsukuba_obs[0,:])>0:
             relative_point_x = self.tsukuba_obs[0,:] - self.position_x
