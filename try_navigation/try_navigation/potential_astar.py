@@ -506,12 +506,12 @@ class PotentialAStar(Node):
         obs2 = make_obs(103, 105, 30, 68) # siyakusyoura kita
         obs3 = make_obs(105, 120, 67.2, 67.2) # siyakusyoura kita2
         obs4 = make_obs(0, 120, 100, 100) # siyakusyo nisi
-        """
-        obs5 = make_obs( 61,100, 33.5, 42.5) # siyakusyo oudanhodou
-        obs6 = make_obs( 61,44, 33.5, 36.5) # siyakusyo oudanhodou
-        obs7 = make_obs(272,273,-65,-49.5) # 7-Eleven mae
-        obs8 = make_obs(-21,-39, 25.5, 28.5) # siyakusyo sibahu1
+        obs5 = make_obs( -13,13, -6.5, -6.5) # siyakusyo oudanhodou
+        obs6 = make_obs( 1,2, -2.5, -2.5) # siyakusyo oudanhodou
+        obs7 = make_obs(5,6,-2.5,-2.5) # 7-Eleven mae
+        obs8 = make_obs(9,10, -2.5, -2.5) # siyakusyo sibahu1
         obs9 = make_obs(-51,-39, 38.5, 28.5) # siyakusyo sibahu2
+        """
         obs10 = make_obs(38, 38, 62, 96.5) # siyakusyo higasi
         obs11 = make_obs(465,485,-74.5, -74.5) # eki minami
         obs12 = make_obs(3,4.8, 19, 23.5) # siyakusyo sibahu
@@ -520,9 +520,9 @@ class PotentialAStar(Node):
         obs15 = make_obs(270.96,270.52,-57.33, -61.25) # singou
         obs16 = make_obs(269.96,273.12,-57.33, -57.05) # singou
         """
-        self.tsukuba_obs = np.hstack((obs1, obs2, obs3, obs4))
+        #self.tsukuba_obs = np.hstack((obs1, obs2, obs3, obs4))
         #self.tsukuba_obs = np.hstack((obs7,obs1))
-        
+        self.tsukuba_obs = np.hstack((obs5, obs6, obs7, obs8))
         #map_obs add
         if len(self.tsukuba_obs[0,:])>0:
             relative_point_x = self.tsukuba_obs[0,:] - self.position_x
@@ -574,7 +574,7 @@ class PotentialAStar(Node):
         
         obs_points = np.insert(obs_points, len(obs_points[0,:]), relative_point_rot.T, axis=1)
         obs_points = np.insert(obs_points, len(obs_points[0,:]), self_radius_points.T, axis=1)
-        obs_points = np.insert(obs_points, len(obs_points[0,:]), self.tsukuba_obs.T, axis=1)
+        #obs_points = np.insert(obs_points, len(obs_points[0,:]), self.tsukuba_obs.T, axis=1)
         points_round = np.round(obs_points * self.obs_pixel) / self.obs_pixel
         obs_xy_local = points_round[:,~pd.DataFrame({"x":points_round[0,:], "y":points_round[1,:]}).duplicated()]
         obs_xy = np.vstack((obs_xy_local[0,:], obs_xy_local[1,:]))
