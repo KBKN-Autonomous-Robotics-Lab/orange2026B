@@ -31,7 +31,7 @@
   <arg name="estop_topic" default="/estop"/>
   <arg name="xacro_file_path" default="$(find-pkg-share orange_description)/xacro/orange_robot.xacro"/>
   <arg name="motor_driver_config_file_path" default="$(find-pkg-share orange_bringup)/config/motor_driver_params.yaml"/>
-  <arg name="start_lat" default="36.049743"/> 
+   <arg name="start_lat" default="36.049743"/> 
   <arg name="start_lon" default="140.0461064"/>
   <arg name="start_heading" default="0.0"/>
   

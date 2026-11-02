@@ -9,6 +9,8 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 
+USE_SIM_TIME =True
+
 def generate_launch_description():
     rviz_config_dir = os.path.join(
         get_package_share_directory('try_navigation'),
@@ -35,12 +37,12 @@ def generate_launch_description():
         default_value='kbkn_maps/waypoints/tsukuba/2026/tsukuba_kakunin.yaml',
         description='waypoint name'
     )
-    #kbkn_maps/waypoints/tsukuba/2025/papa/tsukuba_waypoint.yaml
+    #kbkn_maps/waypoints/tsukuba/2026/tsukuba_kakunin.yaml
     #kbkn_maps/waypoints/hosei/2025/nakaniwa.yaml
     waypoint_start_index = LaunchConfiguration('waypoint_start_index')
     declare_waypoint_start_arg = DeclareLaunchArgument(
         'waypoint_start_index',
-        default_value= '18',
+        default_value= '0',
         description='waypoint start index'
     )
     
@@ -64,6 +66,7 @@ def generate_launch_description():
             executable='pcd_rotation',
             name='pcd_rotation_node',
             output='screen',
+            parameters=[{'use_sim_time': USE_SIM_TIME}],
             arguments=[]
         ),
         
@@ -72,6 +75,7 @@ def generate_launch_description():
             executable='odom_combination',
             name='odom_combination',
             output='screen',
+            parameters=[{'use_sim_time': USE_SIM_TIME}],
             arguments=[],
         ),
    
@@ -80,6 +84,7 @@ def generate_launch_description():
             executable='ekf_myself_gps',
             name='sensor_fusion',
             output='screen',
+            parameters=[{'use_sim_time': USE_SIM_TIME}],
             arguments=[]
         ),
         
@@ -88,6 +93,7 @@ def generate_launch_description():
             executable='pcd_height_segmentation',
             name='pcd_heigth_segmentation_node',
             output='screen',
+            parameters=[{'use_sim_time': USE_SIM_TIME}],
             arguments=[]
         ),
         
@@ -96,6 +102,7 @@ def generate_launch_description():
             executable='pcd_reflect_segmentation',
             name='pcd_reflect_segmentation_node',
             output='screen',
+            parameters=[{'use_sim_time': USE_SIM_TIME}],
             arguments=[]
         ),
         
@@ -114,6 +121,7 @@ def generate_launch_description():
             name='gps_waypoint',
             output='screen',
             parameters=[{'odom': odom},
+                        {'use_sim_time': USE_SIM_TIME},
                         {'waypoint_path': waypoint_path},
                         {'waypoint_start_index': waypoint_start_index}],
             arguments=[],
@@ -133,7 +141,7 @@ def generate_launch_description():
             executable='potential_astar',
             name='potential_astar_node',
             output='screen',
-            parameters=[{'odom': odom}],
+            parameters=[{'odom': odom},{'use_sim_time': USE_SIM_TIME}],
             arguments=[],
         ),
         #robot ctrl
@@ -141,7 +149,7 @@ def generate_launch_description():
             executable='path_follower',
             name='path_follower_node',
             output='screen',
-            parameters=[{'odom': odom}],
+            parameters=[{'odom': odom},{'use_sim_time': USE_SIM_TIME}],
             arguments=[],
         ),
         
