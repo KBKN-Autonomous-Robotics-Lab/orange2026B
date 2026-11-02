@@ -507,9 +507,9 @@ class PotentialAStar(Node):
         obs3 = make_obs(105, 120, 67.2, 67.2) # siyakusyoura kita2
         obs4 = make_obs(0, 120, 100, 100) # siyakusyo nisi
         obs5 = make_obs( -13,13, -6.5, -6.5) # siyakusyo oudanhodou
-        obs6 = make_obs( 1,2, -2.5, -2.5) # siyakusyo oudanhodou
-        obs7 = make_obs(5,6,-2.5,-2.5) # 7-Eleven mae
-        obs8 = make_obs(9,10, -2.5, -2.5) # siyakusyo sibahu1
+        obs6 = make_obs( 2,2.5, -1.5, -1.5) # siyakusyo oudanhodou
+        obs7 = make_obs(5.5,6,-1.5,-1.5) # 7-Eleven mae
+        obs8 = make_obs(9,9.5, -1.5, -1.5) # siyakusyo sibahu1
         obs9 = make_obs(-51,-39, 38.5, 28.5) # siyakusyo sibahu2
         """
         obs10 = make_obs(38, 38, 62, 96.5) # siyakusyo higasi
@@ -522,7 +522,7 @@ class PotentialAStar(Node):
         """
         #self.tsukuba_obs = np.hstack((obs1, obs2, obs3, obs4))
         #self.tsukuba_obs = np.hstack((obs7,obs1))
-        self.tsukuba_obs = np.hstack((obs5, obs6, obs7, obs8))
+        self.tsukuba_obs = np.hstack((obs6, obs7, obs8))
         #map_obs add
         if len(self.tsukuba_obs[0,:])>0:
             relative_point_x = self.tsukuba_obs[0,:] - self.position_x
