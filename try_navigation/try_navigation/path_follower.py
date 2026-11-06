@@ -441,7 +441,7 @@ class PathFollower(Node):
                     target_rad = math.atan2(cx, cf)
                     target_theta = (target_rad) * (180 / math.pi)
                     print("!!!RH!!!! After target_theta[deg]:",target_theta)
-                    
+          
             elif np.any(lh_obs) and ~np.any(rh_obs):  #左寄り 11 <= self.waypoint_number <= 12 \ 
                 speed = 0.25
                 if (

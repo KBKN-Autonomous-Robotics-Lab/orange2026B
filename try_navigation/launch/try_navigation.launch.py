@@ -40,7 +40,7 @@ def generate_launch_description():
     waypoint_start_index = LaunchConfiguration('waypoint_start_index')
     declare_waypoint_start_arg = DeclareLaunchArgument(
         'waypoint_start_index',
-        default_value= '18',
+        default_value= '0',
         description='waypoint start index'
     )
     
