@@ -502,15 +502,16 @@ class PotentialAStar(Node):
         """    
         
         # make map_obs   x1  x2  y1  y2
-        obs1 = make_obs(-45, 25, 95.5, 92.5) # siyakusyoura minami
-        obs2 = make_obs(  5, 20, 100, 102) # siyakusyoura kita
-        obs3 = make_obs( 28, 20, 108, 102) # siyakusyoura kita2
-        obs4 = make_obs(-74.5,-76.5, 105, 29) # siyakusyo nisi
-        obs5 = make_obs( 61,100, 33.5, 42.5) # siyakusyo oudanhodou
-        obs6 = make_obs( 61,44, 33.5, 36.5) # siyakusyo oudanhodou
-        obs7 = make_obs(272,273,-65,-49.5) # 7-Eleven mae
-        obs8 = make_obs(-21,-39, 25.5, 28.5) # siyakusyo sibahu1
+        obs1 = make_obs(98.6, 98.6, 65, 86) # siyakusyoura minami
+        obs2 = make_obs(103, 105, 30, 68) # siyakusyoura kita
+        obs3 = make_obs(105, 120, 67.2, 67.2) # siyakusyoura kita2
+        obs4 = make_obs(0, 120, 100, 100) # siyakusyo nisi
+        obs5 = make_obs( -13,13, -6.5, -6.5) # siyakusyo oudanhodou
+        obs6 = make_obs( 2,2.5, -1.5, -1.5) # siyakusyo oudanhodou
+        obs7 = make_obs(5.5,6,-1.5,-1.5) # 7-Eleven mae
+        obs8 = make_obs(9,9.5, -1.5, -1.5) # siyakusyo sibahu1
         obs9 = make_obs(-51,-39, 38.5, 28.5) # siyakusyo sibahu2
+        """
         obs10 = make_obs(38, 38, 62, 96.5) # siyakusyo higasi
         obs11 = make_obs(465,485,-74.5, -74.5) # eki minami
         obs12 = make_obs(3,4.8, 19, 23.5) # siyakusyo sibahu
@@ -518,18 +519,18 @@ class PotentialAStar(Node):
         obs14 = make_obs(273.06,269.82, -61.24, -61.25) # singou
         obs15 = make_obs(270.96,270.52,-57.33, -61.25) # singou
         obs16 = make_obs(269.96,273.12,-57.33, -57.05) # singou
-
-        #self.tsukuba_obs = np.hstack((obs1, obs4, obs5, obs6, obs7, obs8, obs9, obs10, obs11, obs12, obs13, obs14, obs15, obs16))
+        """
+        self.tsukuba_obs = np.hstack((obs1, obs2, obs3, obs4))
         #self.tsukuba_obs = np.hstack((obs7,obs1))
-        
+        #self.tsukuba_obs = np.hstack((obs6, obs7, obs8))
         #map_obs add
-        #if len(self.tsukuba_obs[0,:])>0:
-        #   relative_point_x = self.tsukuba_obs[0,:] - self.position_x
-        #  relative_point_y = self.tsukuba_obs[1,:] - self.position_y
-        # relative_point = np.array((relative_point_x, relative_point_y, self.tsukuba_obs[2,:]))
-        #    relative_point_rot, t_point_rot_matrix = rotation_xyz(relative_point, self.theta_x, self.theta_y, -self.theta_z)
-        #else:
-          #  relative_point_rot = np.array([[],[],[]])
+        if len(self.tsukuba_obs[0,:])>0:
+            relative_point_x = self.tsukuba_obs[0,:] - self.position_x
+            relative_point_y = self.tsukuba_obs[1,:] - self.position_y
+            relative_point = np.array((relative_point_x, relative_point_y, self.tsukuba_obs[2,:]))
+            relative_point_rot, t_point_rot_matrix = rotation_xyz(relative_point, self.theta_x, self.theta_y, -self.theta_z)
+        else:
+            relative_point_rot = np.array([[],[],[]])
         
         ###################################
                 
@@ -571,7 +572,7 @@ class PotentialAStar(Node):
             obs_points = np.insert(obs_points, len(obs_points[0,:]), shibafu_local.T, axis=1)
             print("!!!!!!!!Add Shibafu!!!!!!!!")
         
-        #obs_points = np.insert(obs_points, len(obs_points[0,:]), relative_point_rot.T, axis=1)
+        obs_points = np.insert(obs_points, len(obs_points[0,:]), relative_point_rot.T, axis=1)
         obs_points = np.insert(obs_points, len(obs_points[0,:]), self_radius_points.T, axis=1)
         #obs_points = np.insert(obs_points, len(obs_points[0,:]), self.tsukuba_obs.T, axis=1)
         points_round = np.round(obs_points * self.obs_pixel) / self.obs_pixel
