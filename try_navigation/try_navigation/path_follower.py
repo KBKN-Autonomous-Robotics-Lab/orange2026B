@@ -281,10 +281,10 @@ class PathFollower(Node):
         
         speed_set = 0.7#55 AutoNav 1.10
         
-        if 20 <= self.waypoint_number <=25:
-            speed_set = 0.25
+        if 28 <= self.waypoint_number <=34:
+            speed_set = 0.30
          
-        elif 15 <= self.waypoint_number <=17:
+        elif 23 <= self.waypoint_number <=16:
             speed_set = 0.5
             
         speed = speed_set
@@ -450,7 +450,7 @@ class PathFollower(Node):
                 lh_obs_close = min(lh_obs[1,:]) # y0 lh min
                 lh_dist = -0.65 # 0.65
                 if self.waypoint_number==25:
-                    lh_dist = -0.45 # 0.65
+                    lh_dist = -0.40 # 0.65
                 cy = cf
                 cx = lh_obs_close + lh_dist
                 target_rad = math.atan2(cx, cf)
