@@ -76,6 +76,7 @@ class PathFollower(Node):
         self.step_sub = self.create_subscription(sensor_msgs.PointCloud2, '/pcd_segment_low_step', self.low_obs_steer, qos_profile)
         self.goal_sub = self.create_subscription(PoseStamped, '/goal_pose', self.goal_pose_callback, qos_profile)
         self.waypoint_number_sub = self.create_subscription(Int32,'/waypoint_number', self.get_waypoint_number, qos_profile_sub)
+        self.tof_flag_sub = self.create_subscription(Bool, '/tof_flag', self.get_tof_flag, qos_profile_sub)
         self.subscription  # 警告を回避するために設置されているだけです。削除しても挙動はかわりません。
         
         # タイマーを0.05秒（50ミリ秒）ごとに呼び出す
@@ -185,6 +186,10 @@ class PathFollower(Node):
         # stop line
         self.stop_line = None
 
+        # tof flag (tanaka sotsuron)
+        self.use_tof_flag = 1 #(1:use, 0:not use)
+        self.tof_stopflag = None
+
     # actionリクエストの受信時に呼ばれる(tuika)
     def listener_callback(self, goal_handle):
         global navigation_status
@@ -240,7 +245,10 @@ class PathFollower(Node):
     
     def stopline_callback(self, msg):
         self.stop_line = msg.data
-        
+
+    def get_tof_flag(self, msg):
+        self.tof_stopflag = msg.data
+           
     def robot_ctrl(self):
         self.get_logger().info('0.05秒ごとに車両制御を実行')
         
@@ -404,7 +412,17 @@ class PathFollower(Node):
                 self.none_jam_timer = now
             self.jam_active = False
 
-        #---------------------------        
+        #---------------------------    
+
+        #====================== tof stop (tanaka sotsuron) ======================
+        if self.use_tof_flag == 1:
+            if self.tof_stopflag == True:
+                self.stop_flag = 1
+                self.get_logger().info('ToF sensor detect step. stop_flag == 1')
+            elif self.tof_stopflag == False:
+                self.stop_flag = 0
+                self.get_logger().info('Nothing detect. stop_flag == 0')
+        #========================================================================
         
         if ~np.any(ch_obs) :
             if np.any(lh_obs) and np.any(rh_obs) :  #真ん中　
@@ -523,6 +541,7 @@ class PathFollower(Node):
         else:
             twist_msg.linear.x = 0.0  # 前進速度 (m/s)
             twist_msg.angular.z = 0.0  # 角速度 (rad/s)
+            
         
         self.cmd_vel_publisher.publish(twist_msg)
         #self.get_logger().info('Publishing cmd_vel: linear.x = %f, angular.z = %f : %f deg' % (twist_msg.linear.x, twist_msg.angular.z, math.degrees(twist_msg.angular.z)))
