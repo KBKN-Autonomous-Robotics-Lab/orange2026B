@@ -15,6 +15,7 @@ from my_msgs.action import StopFlag ####
 from geometry_msgs.msg import PoseStamped
 from std_msgs.msg import Int32
 from std_msgs.msg import String
+from std_msgs.msg import Bool
 import tkinter as tk
 from threading import Thread
 
@@ -287,7 +288,7 @@ class PathFollower(Node):
         
         #set speed
         
-        speed_set = 0.7#55 AutoNav 1.10
+        speed_set = 0.1#55 AutoNav 1.10
         
         if 28 <= self.waypoint_number <=34:
             speed_set = 0.30

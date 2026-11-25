@@ -16,7 +16,7 @@ class ToFSerialNode(Node):
         )
 
         self.ser = serial.Serial(
-            '/dev/ttyACM0',
+            '/dev/sensors/tof',
             115200,
             timeout=0.1
         )
@@ -41,6 +41,7 @@ class ToFSerialNode(Node):
                 self.get_logger().info('STOP')
             
             elif data == "GO":
+                msg = Bool()
                 msg.data = False
                 self.publisher.publish(msg)
                 self.get_logger().info('GO')
