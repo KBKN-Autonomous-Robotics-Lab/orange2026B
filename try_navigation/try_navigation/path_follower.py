@@ -88,6 +88,13 @@ class PathFollower(Node):
         self.pcd_jam_publisher = self.create_publisher(sensor_msgs.PointCloud2, 'pcd_jam', qos_profile) 
         #self.marker_pub = self.create_publisher(MarkerArray, 'wall_follow_markers', 10)
 
+        # safety zone (x_min, x_max, y_min, y_max) [m], obs frame
+        # body mask in pcd_height_segmentation: x -0.55~0.10, y -0.29~0.29
+        self.safety_stop_range = (0.10, 0.60, -0.35, 0.35)
+        self.safety_slow_range = (0.60, 1.30, -0.35, 0.35)
+        self.safety_slow_speed = 0.20
+        self.safety_min_points = 3
+
         #パラメータ init
         self.path_plan = np.array([[0],[0],[0]])
         
@@ -284,7 +291,7 @@ class PathFollower(Node):
         if 28 <= self.waypoint_number <=34:
             speed_set = 0.30
          
-        elif 23 <= self.waypoint_number <=16:
+        elif 23 <= self.waypoint_number <=26:
             speed_set = 0.5
             
         speed = speed_set
@@ -392,6 +399,8 @@ class PathFollower(Node):
                     if elapsed <= 50.0:
                         speed = 0.0
                         target_rad = 0.0
+                        self.last_speed = 0.0
+                        self.cmd_vel_publisher.publish(geometry_msgs.Twist())                        
                         return
                     else: #20 sec passed 
                         self.jam_active = False
@@ -494,8 +503,8 @@ class PathFollower(Node):
             speed = 0.10
             target_rad = lim_steer/180*math.pi
             #print("over write1")
-        if abs(target_theta)  > 90:
-            speed = -0.10
+        #if abs(target_theta)  > 90:
+            #speed = 0.0
         if np.any(c_obs_back) :
             speed = 0.10     
         
@@ -511,6 +520,21 @@ class PathFollower(Node):
         target_theta = target_theta +90     ######/180*math.pi
         target_rad_pd = self.sensim0(target_rad)
         #target_rad_pd = target_rad
+        
+        last_speed = speed
+        
+        # safety limit (last speed override before publish)
+        stop_pts = self.pcd_serch(points, *self.safety_stop_range)
+        slow_pts = self.pcd_serch(points, *self.safety_slow_range)
+        if stop_pts.shape[1] >= self.safety_min_points:
+            speed = 0.0
+            last_speed = 0.0
+            print(f"### Safety ### STOP {stop_pts.shape[1]} pts")
+        elif slow_pts.shape[1] >= self.safety_min_points:
+            speed = min(speed, self.safety_slow_speed)
+            last_speed = min(last_speed, self.safety_slow_speed)
+            print(f"### Safety ### SLOW {slow_pts.shape[1]} pts")
+        self.last_speed = last_speed
 
         #make msg
         twist_msg = geometry_msgs.Twist()
