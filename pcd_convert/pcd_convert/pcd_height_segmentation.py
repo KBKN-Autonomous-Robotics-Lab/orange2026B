@@ -59,7 +59,7 @@ class PcdHeightSegmentation(Node):
         self.STEP_Y_MIN     = -5000/1000; #y mask range[m]
         self.STEP_Y_MAX     =  5000/1000; #y mask range[m]
         #set low step range
-        self.LOW_STEP_HIGHT_MIN =   -200/1000; #hight range[m]
+        self.LOW_STEP_HIGHT_MIN =   -200/1000; #70 hight range[m]
         self.LOW_STEP_HIGHT_MAX =   -100/1000; #self.OBS_HIGHT_MIN# 200/1000; #hight range[m]
         self.LOW_STEP_X_MIN     = -1500/1000; #x mask range[m]
         self.LOW_STEP_X_MAX     =  1500/1000; #x mask range[rosbag2_2024_10_26-03_14_14_20241026_kakunin_bag1m]
@@ -107,7 +107,7 @@ class PcdHeightSegmentation(Node):
         #pcd_step_height_under = self.height_segment(points, -self.STEP_HIGHT_MAX, -self.STEP_HIGHT_MIN)
         #pcd_step = np.insert(pcd_step, len(pcd_step[0,:]), pcd_step_height_under.T, axis=1)
         pcd_step = self.pcd_serch(pcd_step, self.STEP_X_MIN, self.STEP_X_MAX, self.STEP_Y_MIN, self.STEP_Y_MAX)
-        pcd_obs = np.insert(pcd_obs, len(pcd_obs[0,:]), pcd_step.T, axis=1)
+        #pcd_obs = np.insert(pcd_obs, len(pcd_obs[0,:]), pcd_step.T, axis=1) #ToF実験時は段差点群を障害物点群に追加しない
         
         #low step segment
         pcd_low_step = self.height_segment(points, self.LOW_STEP_HIGHT_MIN, self.LOW_STEP_HIGHT_MAX)

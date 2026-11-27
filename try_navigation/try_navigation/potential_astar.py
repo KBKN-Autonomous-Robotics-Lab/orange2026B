@@ -563,11 +563,11 @@ class PotentialAStar(Node):
         
         if dot_line_local.shape[1] > 0:
             obs_points = np.insert(obs_points, len(obs_points[0,:]), dot_line_local.T, axis=1)
-            
+        """   
         if low_step_local.shape[1] > 0:
             obs_points = np.insert(obs_points, len(obs_points[0,:]), low_step_local.T, axis=1)
             print("!!!!!!!!Add Low Step!!!!!!!!")
-            
+        """    
         if shibafu_local.shape[1] > 0:
             obs_points = np.insert(obs_points, len(obs_points[0,:]), shibafu_local.T, axis=1)
             print("!!!!!!!!Add Shibafu!!!!!!!!")
