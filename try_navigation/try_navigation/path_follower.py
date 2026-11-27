@@ -88,8 +88,39 @@ class PathFollower(Node):
         self.pcd_jam_publisher = self.create_publisher(sensor_msgs.PointCloud2, 'pcd_jam', qos_profile) 
         #self.marker_pub = self.create_publisher(MarkerArray, 'wall_follow_markers', 10)
 
+        # emergency avoid range (x_min, x_max, y_min, y_max)
+        self.r_near_range = (-0.2, 0.50, -0.5, 0.0)
+        self.l_near_range = (-0.2, 0.50,  0.0, 0.5)
+        self.c_near_range = (0.0, 0.50, -0.4, 0.4)
+        self.back_near_range = (-0.7, -0.4, -0.4, 0.4)
+        # emergency avoid
+        self.emergency_turn_active = False
+        self.emergency_turn_rad = 0.0
+        self.emergency_angle = 10 # [deg]
+        self.emergency_flag = 0
+
+        # safety zone (x_min, x_max, y_min, y_max) [m], obs frame
+        # body mask in pcd_height_segmentation: x -0.55~0.10, y -0.29~0.29
+        self.safety_stop_range = (0.00, 0.45, -0.35, 0.35)
+        self.safety_slow_range = (0.40, 1.30, -0.35, 0.35)
+        self.safety_slow_speed = 0.20
+        self.safety_min_points = 3
+
+        # stuck recovery
+        self.stop_time = None   # 止まった時刻（走っている間は None）
+        self.back_time = None   # 下がり始めた時刻（下がっていない間は None）
+        self.back_pos = None    # 下がり始めた位置
+        self.stuck_count = 0       # スタック回数（最後にスタックした位置から3m動いたら0に戻す）
+        self.stuck_pos = None      # 最後にスタックした位置
+        self.stuck_per_level = 3 
+
         #パラメータ init
         self.path_plan = np.array([[0],[0],[0]])
+        
+        self.r_near_obs = 0
+        self.l_near_obs = 0
+        self.c_near_obs = 0
+        self.back_near_obs = 0
         
         #positon init
         self.position_x = 0.0 #[m]
@@ -264,6 +295,17 @@ class PathFollower(Node):
         target_rad = math.atan2(relative_point_rot[1], relative_point_rot[0])
         target_theta = (target_rad) * (180 / math.pi)
         
+        ################### Waypoint Direction ###########################
+        target_wp_direction = path[:,-1]
+        relative_wp_x = target_wp_direction[0] - position_x
+        relative_wp_y = target_wp_direction[1] - position_y
+        relative_wp = np.vstack((relative_wp_x, relative_wp_y, target_wp_direction[2]))
+        relative_wp_rot, t_wp_rot_matrix = rotation_xyz(relative_wp, theta_x, theta_y, -theta_z)
+        #relative_point_rot, t_point_rot_matrix = rotation_xyz(relative_point, theta_x, theta_y, -reverse_theta_z)
+        target_wp_rad = math.atan2(relative_wp_rot[1], relative_wp_rot[0])
+        target_wp_theta = (target_wp_rad) * (180 / math.pi)
+        ##################################################################
+        
         ################### Straight Waypoint ############################
         if 191 <= self.waypoint_number <= 192:# or 0 <= self.waypoint_number <= 5:
             target_waypoint = path[:,-1]
@@ -284,7 +326,7 @@ class PathFollower(Node):
         if 28 <= self.waypoint_number <=34:
             speed_set = 0.30
          
-        elif 23 <= self.waypoint_number <=16:
+        elif 23 <= self.waypoint_number <=26:
             speed_set = 0.5
             
         speed = speed_set
@@ -338,10 +380,12 @@ class PathFollower(Node):
                 #target_theta = -lim_steer
                 #target_rad = -lim_steer/180*math.pi
             #self.get_logger().info('ccccccccccccccccc c_obs_near rrrrrrrrrrrrrrr')
-        elif np.any(c_obs_near) :
-            speed = -0.10
-            target_rad, target_theta = self.set_target_rad(path, position_x, position_y, self.target_dist_near, theta_x, theta_y, theta_z)
+            
+        #elif np.any(c_obs_near) :
+          # speed = -0.10
+          #  target_rad, target_theta = self.set_target_rad(path, position_x, position_y, self.target_dist_near, theta_x, theta_y, theta_z)
             #self.get_logger().info('ccccccccccccccccc c_obs_near ccccccccccccccc')
+            
         elif np.any(c_obs) :
             speed = 0.20 # autonav 0.30
             target_rad, target_theta = self.set_target_rad(path, position_x, position_y, self.target_dist_near, theta_x, theta_y, theta_z)
@@ -355,6 +399,108 @@ class PathFollower(Node):
             speed = 0.15
             target_rad = -lim_steer/180*math.pi
         '''
+        
+        #-----------------------emergency avoid-----------------
+        path_target_rad = target_rad
+        r_near_obs = self.r_near_obs
+        l_near_obs = self.l_near_obs
+        c_near_obs = self.c_near_obs
+        back_near_obs = self.back_near_obs
+        cf_near = 0.5
+        
+        if np.any(r_near_obs) or np.any(l_near_obs) or np.any(c_near_obs):
+            self.emergency_flag = 1
+        else:
+            self.emergency_flag = 0
+        
+        if self.emergency_flag == 1:
+            self.add_emergency_dist = 0.1 #[m]
+        elif self.emergency_flag == 0:
+            self.add_emergency_dist = 0.0 #[m]
+
+        if np.any(r_near_obs) and np.any(l_near_obs) and ~np.any(c_near_obs):
+            speed = 0.1
+            target_theta = (target_rad) * (180 / math.pi)
+            print("--- Center --- Befor target_theta[deg]:",target_theta)
+            l_near_obs_close = min(l_near_obs[1,:]) # y0 lh min
+            r_near_obs_close = max(r_near_obs[1,:]) # y0 rh min
+            cy_near = cf_near
+            cx_near = (l_near_obs_close + r_near_obs_close) / 2
+            target_rad = math.atan2(cx_near, cy_near)
+            #c_point = (cx, cy)
+            target_theta = (target_rad) * (180 / math.pi)
+            print("--- Center --- After target_theta[deg]:",target_theta)
+            angle_diff = math.atan2(math.sin(target_rad - target_wp_rad), math.cos(target_rad - target_wp_rad))
+            # 角度差が90°以上なら経路方向に従う
+            if abs(angle_diff) >= math.pi / 2:
+                target_rad, target_theta = self.set_target_rad(path, position_x, position_y, self.target_dist_near, theta_x, theta_y, theta_z)
+        elif np.any(r_near_obs) and np.any(l_near_obs) and np.any(c_near_obs) and ~np.any(back_near_obs):
+            speed = -0.1
+            #target_rad = 0.0
+            #target_theta = (target_rad) * (180 / math.pi)
+            self.emergency_turn_active = False
+            self.get_logger().info('||||||||||| back |||||||||||||||||')
+        elif np.any(r_near_obs) and np.any(l_near_obs) and np.any(c_near_obs) and np.any(back_near_obs):
+            speed = 0.0
+            self.get_logger().info('||||||||||| stay and turn |||||||||||||||||')
+        elif np.any(r_near_obs) and ~np.any(l_near_obs):
+            #speed = 0.0 # autonav
+            '''
+            if not self.emergency_turn_active:
+                if path_target_rad > 0.0:
+                    target_theta = self.emergency_angle
+                elif path_target_rad < 0.0:
+                    target_theta = -self.emergency_angle
+                else:
+                    target_theta = self.emergency_angle
+                self.emergency_turn_rad = (target_theta) * (math.pi / 180)
+                self.emergency_turn_active = True
+            
+            target_rad = self.emergency_turn_rad
+            target_theta = (target_rad) * (180 / math.pi)
+            '''
+            target_theta = (target_rad) * (180 / math.pi)
+            print("!!!RH!!!! Befor target_theta[deg]:",target_theta)
+            r_near_obs_close = max(r_near_obs[1,:]) # y0 rh min
+            r_near_dist = 0.65 # 0.65
+            cy_near = cf_near
+            cx_near = r_near_obs_close + r_near_dist
+            target_rad = math.atan2(cx_near, cy_near)
+            #self.publish_wall_target(cy_near, cx_near, 'rh')
+            target_theta = (target_rad) * (180 / math.pi)
+            print("!!!RH!!!! After target_theta[deg]:",target_theta)
+            self.get_logger().info('||||||||||| turn left |||||||||||||||||')
+            #self.get_logger().info('||||||||||| turn right obstacle |||||||||||||||||')
+        elif np.any(l_near_obs) and ~np.any(r_near_obs):
+            #speed = 0.0 # autonav
+            '''
+            if not self.emergency_turn_active:
+                if path_target_rad > 0.0:
+                    target_theta = self.emergency_angle
+                elif path_target_rad < 0.0:
+                    target_theta = -self.emergency_angle
+                else:
+                    target_theta = -self.emergency_angle
+                self.emergency_turn_rad = (target_theta) * (math.pi / 180)
+                self.emergency_turn_active = True
+            
+            target_rad = self.emergency_turn_rad
+            target_theta = (target_rad) * (180 / math.pi)
+            '''
+            target_theta = (target_rad) * (180 / math.pi)
+            print("!!!LH!!!! Befor target_theta[deg]:",target_theta)
+            l_near_obs_close = min(l_near_obs[1,:]) # y0 lh min
+            l_near_dist = -0.65 # 0.65
+            cy_near = cf_near
+            cx_near = l_near_obs_close + l_near_dist
+            target_rad = math.atan2(cx_near, cy_near)
+            #self.publish_wall_target(cy_near, cx_near, 'lh')
+            target_theta = (target_rad) * (180 / math.pi)
+            self.get_logger().info('||||||||||| turn right |||||||||||||||||')
+            #self.get_logger().info('||||||||||| turn left obstacle |||||||||||||||||')
+        else:
+            self.get_logger().info('||||||||||| emergency cleared |||||||||||||||||')
+        #-------------------------------------------------------
         
         rh_obs = self.rh_obs
         lh_obs = self.lh_obs
@@ -392,6 +538,8 @@ class PathFollower(Node):
                     if elapsed <= 50.0:
                         speed = 0.0
                         target_rad = 0.0
+                        self.last_speed = 0.0
+                        self.cmd_vel_publisher.publish(geometry_msgs.Twist())                        
                         return
                     else: #20 sec passed 
                         self.jam_active = False
@@ -494,10 +642,11 @@ class PathFollower(Node):
             speed = 0.10
             target_rad = lim_steer/180*math.pi
             #print("over write1")
-        if abs(target_theta)  > 90:
-            speed = -0.10
+        #if abs(target_theta)  > 90:
+            #speed = 0.0
+        #######hituyounaikamo
         if np.any(c_obs_back) :
-            speed = 0.10     
+            speed = 0.00     
         
         #elif abs(target_theta)  > 90:
         #    speed = 0.2
@@ -511,6 +660,49 @@ class PathFollower(Node):
         target_theta = target_theta +90     ######/180*math.pi
         target_rad_pd = self.sensim0(target_rad)
         #target_rad_pd = target_rad
+        
+        last_speed = speed
+        
+        # safety limit (last speed override before publish)
+        stop_pts = self.pcd_serch(points, *self.safety_stop_range)
+        slow_pts = self.pcd_serch(points, *self.safety_slow_range)
+        if stop_pts.shape[1] >= self.safety_min_points:
+            speed = 0.0
+            last_speed = 0.0
+            print(f"### Safety ### STOP {stop_pts.shape[1]} pts")
+        elif slow_pts.shape[1] >= self.safety_min_points:
+            speed = min(speed, self.safety_slow_speed)
+            last_speed = min(last_speed, self.safety_slow_speed)
+            print(f"### Safety ### SLOW {slow_pts.shape[1]} pts")
+        self.last_speed = last_speed
+
+        # stuck recovery: 3 s stopped -> back 0.2 m
+        now_s = self.get_clock().now().nanoseconds / 1e9
+        pos = np.array([self.position_x, self.position_y])
+        if self.back_time is not None:
+            if np.linalg.norm(pos - self.back_pos) < 0.10 and now_s - self.back_time < 3.0:
+                last_speed = -0.1
+                target_rad_pd = 0.0
+            else:
+                self.back_time = None
+                self.stop_time = None
+                last_speed = 0.0
+        elif stop_pts.shape[1] >= self.safety_min_points and self.stop_flag == 0:
+            if self.stop_time is None:
+                self.stop_time = now_s
+            elif now_s - self.stop_time > 3.0:
+                self.back_time = now_s
+                self.back_pos = pos
+                self.stuck_count += 1
+                self.stuck_pos = pos
+        else:
+            self.stop_time = None
+        self.last_speed = last_speed
+
+        if self.stuck_pos is not None and np.linalg.norm(pos - self.stuck_pos) > 3.0:
+            self.stuck_count = 0
+            self.stuck_pos = None
+        #self.stuck_level_pub.publish(Int32(data=self.stuck_count // self.stuck_per_level))
 
         #make msg
         twist_msg = geometry_msgs.Twist()
@@ -649,6 +841,18 @@ class PathFollower(Node):
         #map_obs
         self.obs_points = points
         
+        # 緊急回避用範囲
+        r_near_range = (self.r_near_range[0], self.r_near_range[1] + self.add_emergency_dist, self.r_near_range[2], self.r_near_range[3])
+        l_near_range = (self.l_near_range[0], self.l_near_range[1] + self.add_emergency_dist, self.l_near_range[2], self.l_near_range[3])
+        #r_near_range = self.r_near_range
+        #l_near_range = self.l_near_range
+        c_near_range = (self.c_near_range[0], self.c_near_range[1] + self.add_emergency_dist, self.c_near_range[2], self.c_near_range[3])
+        back_near_range = self.back_near_range
+        r_near_obs = self.pcd_serch(points, *r_near_range)
+        l_near_obs = self.pcd_serch(points, *l_near_range)
+        c_near_obs = self.pcd_serch(points, *c_near_range)
+        back_near_obs = self.pcd_serch(points, *back_near_range)
+        
         rh_obs = self.pcd_serch(points, 1.0,1.3,-1.0,0)#1.0,1.3,-0.7,0
         if len(rh_obs[0,:]) > 10:
             self.rh_obs = 1
@@ -664,6 +868,11 @@ class PathFollower(Node):
 
         c_jam_obs = self.pcd_serch(points, 0.0,2.0,-0.6,0.6,0.6,1.0) #1.0,1.3,-0.4,0.4 #1.0,2.0,-0.8,0.8
             
+        self.r_near_obs = r_near_obs
+        self.l_near_obs = l_near_obs
+        self.c_near_obs = c_near_obs
+        self.back_near_obs = back_near_obs
+  
         self.rh_obs = rh_obs
         self.lh_obs = lh_obs
         self.ch_obs = ch_obs

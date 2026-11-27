@@ -35,8 +35,8 @@ def generate_launch_description():
         default_value='kbkn_maps/waypoints/tsukuba/2026/tsukuba_kakunin.yaml',
         description='waypoint name'
     )
-    #kbkn_maps/waypoints/tsukuba/2025/papa/tsukuba_waypoint.yaml
-    #kbkn_maps/waypoints/hosei/2025/nakaniwa.yaml
+    #kbkn_maps/waypoints/tsukuba/2026/tsukuba_kakunin.yaml
+    #kbkn_maps/waypoints/hosei/2025/nakaniwa_long.yaml
     waypoint_start_index = LaunchConfiguration('waypoint_start_index')
     declare_waypoint_start_arg = DeclareLaunchArgument(
         'waypoint_start_index',
