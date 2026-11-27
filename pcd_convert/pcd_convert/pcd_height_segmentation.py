@@ -59,8 +59,8 @@ class PcdHeightSegmentation(Node):
         self.STEP_Y_MIN     = -5000/1000; #y mask range[m]
         self.STEP_Y_MAX     =  5000/1000; #y mask range[m]
         #set low step range
-        self.LOW_STEP_HIGHT_MIN =   70/1000; #hight range[m]
-        self.LOW_STEP_HIGHT_MAX =   self.OBS_HIGHT_MIN# 200/1000; #hight range[m]
+        self.LOW_STEP_HIGHT_MIN =   -200/1000; #hight range[m]
+        self.LOW_STEP_HIGHT_MAX =   -100/1000; #self.OBS_HIGHT_MIN# 200/1000; #hight range[m]
         self.LOW_STEP_X_MIN     = -1500/1000; #x mask range[m]
         self.LOW_STEP_X_MAX     =  1500/1000; #x mask range[rosbag2_2024_10_26-03_14_14_20241026_kakunin_bag1m]
         self.LOW_STEP_Y_MIN     = -5000/1000; #y mask range[m]

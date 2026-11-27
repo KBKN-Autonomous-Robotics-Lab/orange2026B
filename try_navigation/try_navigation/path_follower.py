@@ -57,7 +57,7 @@ class PathFollower(Node):
         )
 
         # set parameter (launch can change this parameter)
-        self.declare_parameter('odom', '/fusion/odom')
+        self.declare_parameter('odom', '/odom/whhel_spimu')
         
         # define parameter
         odom_topic = self.get_parameter('odom').get_parameter_value().string_value
@@ -310,7 +310,7 @@ class PathFollower(Node):
         c_obs_near = ( -50<obs_theta) * (obs_theta<  50) * (obs_dist<0.5)
         c_obs_back = ( -50<obs_theta) * (obs_theta<  50) * (obs_dist<0.4)
 
-        
+               
         if np.any(r_obs) and np.any(l_obs) and ~np.any(c_obs) :
             speed = 0.25
             #target_theta = 0
@@ -414,17 +414,8 @@ class PathFollower(Node):
             self.jam_active = False
 
         #---------------------------    
+        
 
-        #====================== tof stop (tanaka sotsuron) ======================
-        if (2<= self.waypoint_number <= 100):
-            if self.use_tof_flag == 1:
-                if self.tof_stopflag == True:
-                    self.stop_flag = 1
-                    self.get_logger().info('ToF sensor detect step. stop_flag == 1')
-                elif self.tof_stopflag == False:
-                    self.stop_flag = 0
-                    self.get_logger().info('Nothing detect. stop_flag == 0')
-        #========================================================================
         
         if ~np.any(ch_obs) :
             if np.any(lh_obs) and np.any(rh_obs) :  #真ん中　
@@ -463,8 +454,8 @@ class PathFollower(Node):
                     print("!!!RH!!!! After target_theta[deg]:",target_theta)
           
             
-            elif np.any(lh_obs) and (23 <= self.waypoint_number <= 26 and (-120 <= theta_z <= -60)):
-                speed = 0.25
+            elif np.any(lh_obs) and (1 <= self.waypoint_number <= 26):
+                speed = 0.10
                 target_theta = (target_rad) * (180 / math.pi)
                 print("!!!LH!!!! Befor target_theta[deg]:",target_theta)
                 lh_obs_close = min(lh_obs[1,:]) # y0 lh min
@@ -498,6 +489,17 @@ class PathFollower(Node):
             #elif ~np.any(rh_obs) and ~np.any(lh_obs):
             #    speed = 0.25
                            
+        #====================== tof stop (tanaka sotsuron) ======================
+        if navigation_status == "GO":
+            if self.use_tof_flag == 1:
+                if self.tof_stopflag == True:
+                    self.stop_flag = 1
+                    self.get_logger().info('ToF sensor detect step. stop_flag == 1')
+                elif self.tof_stopflag == False:
+                    self.stop_flag = 0
+                    self.get_logger().info('Nothing detect. stop_flag == 0')
+        #========================================================================
+
         lim_steer = 20
         #lim_steer = 30 24/11/29 ok
         #if abs(target_theta) < 10 and 0.0 < speed and speed < 0.5:

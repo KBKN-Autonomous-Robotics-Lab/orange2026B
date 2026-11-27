@@ -137,13 +137,13 @@ def generate_launch_description():
             arguments=[],
         ),
         #robot ctrl
-        Node(package='try_navigation',
-            executable='path_follower',
-            name='path_follower_node',
-            output='screen',
-            parameters=[{'odom': odom}],
-            arguments=[],
-        ),
+        #Node(package='try_navigation',
+        #    executable='path_follower',
+        #    name='path_follower_node',
+        #    output='screen',
+        #    parameters=[{'odom': odom}],
+        #    arguments=[],
+        #),
         
         #navigation start
         Node(package='navigation_control',
