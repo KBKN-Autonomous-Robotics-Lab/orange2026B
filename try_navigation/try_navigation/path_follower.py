@@ -251,7 +251,7 @@ class PathFollower(Node):
         self.tof_stopflag = msg.data
            
     def robot_ctrl(self):
-        self.get_logger().info('0.05秒ごとに車両制御を実行')
+        #self.get_logger().info('0.05秒ごとに車両制御を実行')
         
         path = self.path_plan;
         position_x=self.position_x; position_y=self.position_y; 
@@ -416,13 +416,14 @@ class PathFollower(Node):
         #---------------------------    
 
         #====================== tof stop (tanaka sotsuron) ======================
-        if self.use_tof_flag == 1:
-            if self.tof_stopflag == True:
-                self.stop_flag = 1
-                self.get_logger().info('ToF sensor detect step. stop_flag == 1')
-            elif self.tof_stopflag == False:
-                self.stop_flag = 0
-                self.get_logger().info('Nothing detect. stop_flag == 0')
+        if (2<= self.waypoint_number <= 100):
+            if self.use_tof_flag == 1:
+                if self.tof_stopflag == True:
+                    self.stop_flag = 1
+                    self.get_logger().info('ToF sensor detect step. stop_flag == 1')
+                elif self.tof_stopflag == False:
+                    self.stop_flag = 0
+                    self.get_logger().info('Nothing detect. stop_flag == 0')
         #========================================================================
         
         if ~np.any(ch_obs) :
