@@ -175,7 +175,7 @@ class ExtendedKalmanFilter(Node):
 
     def determination_of_R(self):
         if self.GpsXY is not None:
-            #カルマンフィルタのデッドレコニングよりになる範囲を指定
+            #カルマンフィルタのデッドレコニングよりになる範囲を指定 
             if ((40<self.GpsXY[0]) and (self.GpsXY[0]<118) and (-29 < self.GpsXY[1]) and (self.GpsXY[1]<88)) : # last is for nakaniwa test or ((-41<self.GpsXY[0]) and (self.GpsXY[0]<-7) and (-52 < self.GpsXY[1]) and (self.GpsXY[1]<71)) eki x 476<self.GpsXY[0]) and (self.GpsXY[0]<600
                 #self.gps_rr_flag = 1
                 self.gps_rr_flag = 0 #self.gps_rr_flag =1はGPS受信精度よく、0でGPS受信精度低い範囲に入ったフラグ
