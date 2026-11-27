@@ -25,18 +25,18 @@ def generate_launch_description():
     odom = LaunchConfiguration('odom')
     declare_odom_arg = DeclareLaunchArgument(
         'odom',
-        default_value='/odom/wheel_spimu',#/odom/wheel_spimu /fusion/odom
+        default_value='/fusion/odom',#/odom/wheel_spimu /fusion/odom
         description='Odometry topic name'
     )
     
     waypoint_path = LaunchConfiguration('waypoint_path')
     declare_waypoint_arg = DeclareLaunchArgument(
         'waypoint_path',
-        default_value='kbkn_maps/waypoints/hosei/2025/nakaniwa_long.yaml',
+        default_value='kbkn_maps/waypoints/tsukuba/2026/tsukuba_kakunin.yaml',
         description='waypoint name'
     )
-    #kbkn_maps/waypoints/tsukuba/2025/papa/tsukuba_waypoint.yaml
-    #kbkn_maps/waypoints/hosei/2025/nakaniwa.yaml
+    #kbkn_maps/waypoints/tsukuba/2026/tsukuba_kakunin.yaml
+    #kbkn_maps/waypoints/hosei/2025/nakaniwa_long.yaml
     waypoint_start_index = LaunchConfiguration('waypoint_start_index')
     declare_waypoint_start_arg = DeclareLaunchArgument(
         'waypoint_start_index',

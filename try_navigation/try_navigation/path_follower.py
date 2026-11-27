@@ -644,6 +644,7 @@ class PathFollower(Node):
             #print("over write1")
         #if abs(target_theta)  > 90:
             #speed = 0.0
+        #######hituyounaikamo
         if np.any(c_obs_back) :
             speed = 0.00     
         
@@ -680,7 +681,7 @@ class PathFollower(Node):
         pos = np.array([self.position_x, self.position_y])
         if self.back_time is not None:
             if np.linalg.norm(pos - self.back_pos) < 0.10 and now_s - self.back_time < 3.0:
-                last_speed = -0.05
+                last_speed = -0.1
                 target_rad_pd = 0.0
             else:
                 self.back_time = None
